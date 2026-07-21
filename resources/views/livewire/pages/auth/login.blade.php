@@ -2,6 +2,7 @@
 
 use App\Livewire\Forms\LoginForm;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -12,15 +13,27 @@ new #[Layout('layouts.guest')] class extends Component
     /**
      * Handle an incoming authentication request.
      */
-    public function login(): void
+   public function login(): void
     {
-        $this->validate();
+    $this->validate();
 
-        $this->form->authenticate();
+    $this->form->authenticate();
 
-        Session::regenerate();
+    Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+    $user = Auth::user();
+
+    if (!$user) {
+        $this->redirect(route('login', absolute: false), navigate: true);
+        return;
+    }
+
+    if ($user->role === 'admin') {
+        $this->redirect(route('admin.dashboard', absolute: false), navigate: true);
+        return;
+    }
+
+    $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
 }; ?>
 

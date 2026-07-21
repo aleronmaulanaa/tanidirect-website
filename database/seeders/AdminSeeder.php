@@ -3,34 +3,26 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
-   public function run(): void
+    public function run(): void
     {
         User::firstOrCreate(
-            ['email' => 'test@example.com'],
+            ['email' => 'admin@tanidirect.com'],
             [
-                'name' => 'Test User',
+                'name' => 'Administrator',
                 'password' => Hash::make('password'),
-                'role' => 'pembeli',
+                'role' => 'admin',
                 'phone' => '081234567890',
                 'kabupaten_kota' => 'Surabaya',
                 'email_verified_at' => now(),
             ]
         );
-
-        $this->call([
-            AdminSeeder::class,
-            PriceReferenceSeeder::class,
-        ]);
     }
 }
