@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -33,5 +34,20 @@ class User extends Authenticatable
     public function producerProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(ProducerProfile::class);
+    }
+
+    public function orderPoolMembers(): HasMany
+    {
+        return $this->hasMany(OrderPoolMember::class, 'buyer_id');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'buyer_id');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'buyer_id');
     }
 }

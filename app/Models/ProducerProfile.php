@@ -29,4 +29,9 @@ class ProducerProfile extends Model
     {
         return $this->hasMany(Product::class, 'producer_id');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'producer_id');
+    }
 }
