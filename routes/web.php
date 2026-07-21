@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PriceTrackerController;
 use App\Http\Controllers\OrderPoolController;
+use App\Http\Controllers\LandingController;
 
-Route::view('/', 'welcome');
+Route::get('/', [LandingController::class, 'index'])
+    ->name('landing');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -41,4 +43,5 @@ Route::middleware('auth')->group(function () {
             Route::post('/{orderPool}/join', 'join')->name('join');
         });
 });
+
 require __DIR__.'/auth.php';
