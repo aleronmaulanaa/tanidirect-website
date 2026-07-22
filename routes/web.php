@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PriceTrackerController;
+use App\Http\Controllers\ProducerAuthController;
 use App\Http\Controllers\OrderPoolController;
 use App\Http\Controllers\LandingController;
 
@@ -42,6 +43,45 @@ Route::middleware('auth')->group(function () {
             Route::get('/{orderPool}', 'show')->name('show');
             Route::post('/{orderPool}/join', 'join')->name('join');
         });
+});
+
+Route::prefix('producer')->group(function () {
+
+    Route::get('/login', function () {
+
+        return view('producer.auth.login');
+
+    })->name('producer.login');
+
+    Route::post('/login', [
+        ProducerAuthController::class,
+        'login'
+    ])->name('producer.login.process');
+
+    Route::get('/register', function () {
+
+        return view('producer.auth.register');
+
+    })->name('producer.register');
+
+    Route::post('/register', [
+        ProducerAuthController::class,
+        'register'
+    ])->name('producer.register.process');
+
+    Route::post('/logout', [
+        ProducerAuthController::class,
+        'logout'
+    ])->name('producer.logout');
+
+    Route::get('/dashboard', function () {
+
+        return view('producer.dashboard');
+
+    })
+    ->middleware('auth')
+    ->name('producer.dashboard');
+
 });
 
 require __DIR__.'/auth.php';
