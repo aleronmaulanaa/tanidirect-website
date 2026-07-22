@@ -2,123 +2,784 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard Pembeli | TaniDirect</title>
+
+    <title>
+        Dashboard Pembeli | TaniDirect
+    </title>
+
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 
-<body class="min-h-screen bg-green-50">
 
-<header class="bg-white shadow-sm border-b">
 
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+<body class="min-h-screen bg-[#F6F8F3]">
 
-        <div class="flex items-center gap-3">
+
+
+{{-- Navbar --}}
+
+<header class="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur">
+
+
+    <div
+        class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+
+
+        <a href="{{ route('landing') }}">
 
             <img
                 src="{{ asset('images/logo.png') }}"
-                class="h-10"
                 alt="TaniDirect"
-            >
+                class="h-10">
 
-        </div>
+        </a>
 
 
-        <form method="POST" action="{{ route('logout') }}">
+
+
+        <nav class="hidden gap-8 text-sm font-medium text-gray-600 md:flex">
+
+
+            <a href="#produk"
+                class="transition hover:text-green-700">
+
+                Produk
+
+            </a>
+
+
+            <a href="#komoditas"
+                class="transition hover:text-green-700">
+
+                Komoditas
+
+            </a>
+
+
+            <a href="#patungan"
+                class="transition hover:text-green-700">
+
+                Patungan
+
+            </a>
+
+
+
+        </nav>
+
+
+
+
+        <form
+            method="POST"
+            action="{{ route('logout') }}">
+
 
             @csrf
 
+
             <button
-                class="rounded-xl bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700">
+                class="rounded-xl bg-green-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-800">
+
 
                 Logout
 
+
             </button>
+
 
         </form>
 
+
+
     </div>
 
+
 </header>
+
+
+
+
+
+
 
 
 <main class="mx-auto max-w-7xl px-6 py-10">
 
 
-    <div class="rounded-3xl bg-white p-8 shadow">
 
 
-        <h1 class="text-3xl font-bold text-gray-900">
 
-            Halo, {{ Auth::user()->name }} 👋
+{{-- Hero --}}
+
+<section
+    class="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-green-700 via-green-600 to-emerald-500 p-10 text-white shadow-xl">
+
+
+    <div class="relative z-10 max-w-2xl">
+
+
+        <span
+            class="inline-flex rounded-full bg-white/20 px-4 py-2 text-sm font-semibold">
+
+
+            Dashboard Pembeli
+
+
+        </span>
+
+
+
+
+        <h1
+            class="mt-6 text-4xl font-extrabold leading-tight lg:text-5xl">
+
+
+            Halo, {{ $buyer->name }}
+
 
         </h1>
 
 
-        <p class="mt-2 text-gray-500">
 
-            Selamat datang di dashboard pembeli TaniDirect.
+
+        <p
+            class="mt-4 text-lg leading-relaxed text-green-50">
+
+
+            Temukan hasil pertanian berkualitas langsung dari petani
+            dengan harga yang lebih transparan.
+
 
         </p>
 
 
-    </div>
+
+
+        <div class="mt-8 flex flex-wrap gap-4">
+
+
+            <a
+                href="#produk"
+                class="rounded-xl bg-white px-6 py-3 font-semibold text-green-700 transition hover:scale-105">
+
+
+                Cari Produk
+
+
+            </a>
 
 
 
-    <div class="mt-8 grid gap-6 md:grid-cols-3">
+
+            <a
+                href="#patungan"
+                class="rounded-xl border border-white/50 px-6 py-3 font-semibold text-white transition hover:bg-white/10">
 
 
-        <div class="rounded-2xl bg-white p-6 shadow">
-
-            <h3 class="font-semibold text-gray-900">
-                Produk Pertanian
-            </h3>
-
-            <p class="mt-2 text-sm text-gray-500">
-                Cari hasil panen terbaik langsung dari petani.
-            </p>
-
-        </div>
+                Mulai Patungan
 
 
+            </a>
 
-        <div class="rounded-2xl bg-white p-6 shadow">
-
-            <h3 class="font-semibold text-gray-900">
-                Pesanan Saya
-            </h3>
-
-            <p class="mt-2 text-sm text-gray-500">
-                Pantau status pesanan Anda.
-            </p>
-
-        </div>
-
-
-
-        <div class="rounded-2xl bg-white p-6 shadow">
-
-            <h3 class="font-semibold text-gray-900">
-                Patungan Order
-            </h3>
-
-            <p class="mt-2 text-sm text-gray-500">
-                Gabung pesanan bersama pembeli lain.
-            </p>
 
         </div>
 
 
     </div>
+
+
+
+
+    <div
+        class="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/10">
+
+
+    </div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+{{-- Statistik --}}
+
+<section
+    class="mt-10 grid gap-6 md:grid-cols-3">
+
+
+
+<div
+    class="rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
+
+    <p
+        class="text-sm font-medium text-gray-500">
+
+
+        Produk Petani
+
+
+    </p>
+
+
+
+    <h2
+        class="mt-3 text-4xl font-extrabold text-green-700">
+
+
+        {{ $totalProducts }}
+
+
+    </h2>
+
+
+
+    <p
+        class="mt-2 text-sm text-gray-500">
+
+
+        Produk langsung dari produsen
+
+
+    </p>
+
+
+</div>
+
+
+
+
+
+<div
+    class="rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
+
+    <p
+        class="text-sm font-medium text-gray-500">
+
+
+        Patungan Aktif
+
+
+    </p>
+
+
+
+    <h2
+        class="mt-3 text-4xl font-extrabold text-green-700">
+
+
+        {{ $totalOrderPools }}
+
+
+    </h2>
+
+
+
+    <p
+        class="mt-2 text-sm text-gray-500">
+
+
+        Pembelian bersama pengguna lain
+
+
+    </p>
+
+
+</div>
+
+
+
+
+
+<div
+    class="rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
+
+    <p
+        class="text-sm font-medium text-gray-500">
+
+
+        Pesanan Saya
+
+
+    </p>
+
+
+
+    <h2
+        class="mt-3 text-4xl font-extrabold text-green-700">
+
+
+        {{ $totalOrders }}
+
+
+    </h2>
+
+
+
+    <p
+        class="mt-2 text-sm text-gray-500">
+
+
+        Riwayat transaksi pembelian
+
+
+    </p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+{{-- Produk Petani --}}
+
+<section
+    id="produk"
+    class="mt-14">
+
+
+
+<div>
+
+
+<h2
+    class="text-3xl font-extrabold text-gray-900">
+
+
+    Produk Dari Petani
+
+
+</h2>
+
+
+
+<p
+    class="mt-2 text-gray-500">
+
+
+    Hasil panen langsung dari produsen terpercaya.
+
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div
+    class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+
+
+@forelse($products as $product)
+
+
+
+<div
+    class="group overflow-hidden rounded-3xl bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+
+
+
+<div
+    class="h-44 bg-green-50">
+
+
+@if($product->gambar)
+
+
+<img
+    src="{{ asset('storage/'.$product->gambar) }}"
+    class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+
+
+@else
+
+
+<div
+    class="flex h-full items-center justify-center">
+
+
+    <img
+        src="{{ asset('images/logo.png') }}"
+        class="h-20">
+
+
+</div>
+
+
+@endif
+
+
+
+</div>
+
+
+
+
+
+<div
+    class="p-5">
+
+
+<span
+    class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+
+
+    Langsung Petani
+
+
+</span>
+
+
+
+<h3
+    class="mt-4 font-bold text-gray-900">
+
+
+    {{ $product->nama_produk }}
+
+
+</h3>
+
+
+
+
+<p
+    class="mt-2 text-sm text-gray-500">
+
+
+    {{ $product->producer->kabupaten_kota ?? 'Indonesia' }}
+
+
+</p>
+
+
+
+
+<p
+    class="mt-4 text-xl font-extrabold text-green-700">
+
+
+    Rp {{ number_format($product->harga_jual,0,',','.') }}
+
+
+    <span
+        class="text-sm font-normal text-gray-500">
+
+
+        /{{ $product->satuan }}
+
+
+    </span>
+
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+@empty
+
+
+<p class="text-gray-500">
+
+Belum ada produk petani.
+
+</p>
+
+
+@endforelse
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+{{-- Komoditas Unggulan --}}
+
+<section
+    id="komoditas"
+    class="mt-14">
+
+
+
+<h2
+    class="text-3xl font-extrabold text-gray-900">
+
+
+    Komoditas Unggulan
+
+
+</h2>
+
+
+
+<p
+    class="mt-2 text-gray-500">
+
+
+    Referensi harga berdasarkan data pasar.
+
+
+</p>
+
+
+
+
+
+
+<div
+    class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+
+
+@foreach($priceReferences->take(4) as $item)
+
+
+
+@php
+
+$gambar = match($item['kategori']) {
+
+    'BERAS MEDIUM' => 'berasmedium.png',
+
+    'BERAS PREMIUM' => 'beraspremium.png',
+
+    'JAGUNG PIPIL KERING' => 'jagungpipilkering.png',
+
+    'KEDELAI' => 'kedelai.png',
+
+    default => 'logo.png'
+
+};
+
+@endphp
+
+
+
+
+
+
+<div
+    class="overflow-hidden rounded-3xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
+
+
+<div
+    class="h-44 bg-green-50">
+
+
+<img
+    src="{{ asset('images/'.$gambar) }}"
+    class="h-full w-full object-cover">
+
+
+</div>
+
+
+
+
+
+<div
+    class="p-5">
+
+
+<h3
+    class="font-bold text-gray-900">
+
+
+    {{ ucwords(strtolower($item['kategori'])) }}
+
+
+</h3>
+
+
+
+
+<p
+    class="mt-3 text-sm text-gray-500">
+
+
+    Harga petani
+
+
+</p>
+
+
+
+<p
+    class="mt-2 text-2xl font-extrabold text-green-700">
+
+
+Rp {{ number_format($item['harga_produsen'],0,',','.') }}
+
+
+
+<span
+class="text-sm font-normal text-gray-500">
+
+/kg
+
+</span>
+
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+@endforeach
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+{{-- Patungan --}}
+
+<section
+    id="patungan"
+    class="mt-14 pb-10">
+
+
+<h2
+    class="text-3xl font-extrabold text-gray-900">
+
+
+    Patungan Berjalan
+
+
+</h2>
+
+
+
+
+<div
+    class="mt-6 rounded-3xl bg-white p-8 shadow-sm">
+
+
+
+@if($orderPools->count())
+
+
+@foreach($orderPools as $pool)
+
+
+<p class="font-semibold">
+
+{{ $pool->product->nama_produk }}
+
+</p>
+
+
+@endforeach
+
+
+
+@else
+
+
+<h3
+    class="text-xl font-bold text-gray-900">
+
+
+    Belum ada patungan aktif
+
+
+</h3>
+
+
+<p
+    class="mt-2 text-gray-500">
+
+
+    Gabungkan pembelian dengan pengguna lain untuk mendapatkan harga lebih hemat.
+
+
+</p>
+
+
+@endif
+
+
+
+</div>
+
+
+</section>
+
+
+
 
 
 </main>
 
 
+
 </body>
+
 
 </html>

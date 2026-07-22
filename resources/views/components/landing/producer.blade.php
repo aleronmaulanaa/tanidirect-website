@@ -152,13 +152,13 @@
                     @else
 
 
-                        <a
-                            href="#"
-                            class="inline-flex items-center justify-center rounded-xl bg-green-700 px-8 py-3 font-semibold text-white transition hover:bg-green-800">
+                    <a
+                        href="{{ route('producer.register') }}"
+                        class="inline-flex items-center justify-center rounded-xl bg-green-700 px-8 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-green-800 hover:shadow-xl">
 
-                            Daftar Sebagai Petani
+                        Daftar Sebagai Petani
 
-                        </a>
+                    </a>
 
 
                     @endauth

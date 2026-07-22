@@ -157,15 +157,13 @@
 
                     {{-- Producer --}}
 
-                    <a
-                        href="#"
-                        class="inline-flex items-center justify-center rounded-xl border-2 border-white px-9 py-4 font-semibold text-white transition duration-300 hover:-translate-y-2 hover:bg-white hover:text-green-700">
+                <a
+                    href="{{ route('producer.register') }}"
+                    class="inline-flex items-center justify-center rounded-xl border-2 border-white px-9 py-4 font-semibold text-white transition duration-300 hover:-translate-y-2 hover:bg-white hover:text-green-700">
 
+                    🌾 Daftar Sebagai Petani
 
-                        🌾 Daftar Sebagai Petani
-
-
-                    </a>
+</a>
 
 
 
