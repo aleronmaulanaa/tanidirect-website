@@ -53,7 +53,7 @@
         <div class="hidden items-center gap-3 xl:gap-4 lg:flex">
 
             <a
-                href="{{ route('login') }}"
+                href="{{ route('buyer.login') }}"
                 class="rounded-full px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 xl:px-5 xl:py-3 xl:text-base">
 
                 Masuk
@@ -61,10 +61,10 @@
             </a>
 
             <a
-                href="{{ route('register') }}"
+                href="{{ route('buyer.register') }}"
                 class="rounded-full bg-green-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-800 xl:px-7 xl:py-3 xl:text-base">
 
-                Mulai Sekarang
+                Daftar Sekarang
 
             </a>
 
@@ -177,7 +177,7 @@
             <div class="grid grid-cols-2 gap-3 pt-5">
 
                 <a
-                    href="{{ route('login') }}"
+                    href="{{ route('buyer.login') }}"
                     class="rounded-full border border-gray-300 py-3 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100">
 
                     Masuk
@@ -185,10 +185,10 @@
                 </a>
 
                 <a
-                    href="{{ route('register') }}"
+                    href="{{ route('buyer.register') }}"
                     class="rounded-full bg-green-700 py-3 text-center text-sm font-semibold text-white transition hover:bg-green-800">
 
-                    Mulai Sekarang
+                    Daftar Sekarang
 
                 </a>
 
