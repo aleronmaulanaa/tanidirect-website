@@ -8,133 +8,69 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-
 class ProducerAuthController extends Controller
 {
-
     public function register(Request $request)
     {
-
-        $request->validate([
-
+        $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'phone' => 'required',
             'kabupaten_kota' => 'required',
             'komoditas_utama' => 'required',
             'password' => 'required|min:6',
-
         ]);
-
 
         $user = User::create([
-
-            'name' => $request->name,
-
-            'email' => $request->email,
-
+            'name' => $validated['name'],
+            'email' => $validated['email'],
             'role' => 'produsen',
-
-            'phone' => $request->phone,
-
-            'kabupaten_kota' => $request->kabupaten_kota,
-
-            'password' => Hash::make($request->password),
-
+            'phone' => $validated['phone'],
+            'kabupaten_kota' => $validated['kabupaten_kota'],
+            'password' => Hash::make($validated['password']),
         ]);
-
-
 
         ProducerProfile::create([
-
             'user_id' => $user->id,
-
-            'komoditas_utama' => $request->komoditas_utama,
-            
-            'kabupaten_kota' => $request->kabupaten_kota,
-
+            'kabupaten_kota' => $validated['kabupaten_kota'],
+            'komoditas_utama' => $validated['komoditas_utama'],
             'status_verifikasi' => 'terverifikasi',
-
         ]);
 
-
-
-        // setelah register langsung ke login
         return redirect()
             ->route('producer.login')
-            ->with('success', 'Registrasi berhasil. Silakan login.');
-
+            ->with('success', 'Registrasi berhasil, silahkan login.');
     }
-
 
 
     public function login(Request $request)
     {
-
         $credentials = $request->validate([
-
-            'email'=>'required|email',
-
-            'password'=>'required',
-
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-
-
-        if(Auth::attempt($credentials)){
-
+        if (Auth::attempt($credentials)) {
 
             $request->session()->regenerate();
 
-
             $user = Auth::user();
 
-
-
-            if($user->role !== 'produsen'){
+            if ($user->role !== 'produsen') {
 
                 Auth::logout();
 
                 return back()->withErrors([
-
-                    'email'=>'Akun ini bukan akun petani.'
-
+                    'email' => 'Akun ini bukan akun produsen.'
                 ]);
-
             }
-
-
 
             return redirect()
                 ->route('producer.dashboard');
-
         }
 
         return back()->withErrors([
-
-            'email'=>'Email atau password salah.'
-
+            'email' => 'Email atau password salah.'
         ]);
-
     }
-
-    public function logout(Request $request)
-    {
-
-        Auth::logout();
-
-
-        $request->session()->invalidate();
-
-
-        $request->session()->regenerateToken();
-
-
-        return redirect()
-            ->route('producer.login')
-            ->with('success', 'Berhasil logout.');
-
-    }
-
-
 }

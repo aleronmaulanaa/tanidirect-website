@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PriceTrackerController;
 use App\Http\Controllers\ProducerAuthController;
+use App\Http\Controllers\BuyerAuthController;
 use App\Http\Controllers\OrderPoolController;
 use App\Http\Controllers\LandingController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [LandingController::class, 'index'])
     ->name('landing');
@@ -84,4 +86,47 @@ Route::prefix('producer')->group(function () {
 
 });
 
+Route::prefix('buyer')->group(function () {
+
+    Route::get('/login', function () {
+        return view('buyer.auth.login');
+    })->name('buyer.login');
+
+
+    Route::post('/login', [
+        BuyerAuthController::class,
+        'login'
+    ])->name('buyer.login.process');
+
+
+    Route::get('/register', function () {
+        return view('buyer.auth.register');
+    })->name('buyer.register');
+
+
+    Route::post('/register', [
+        BuyerAuthController::class,
+        'register'
+    ])->name('buyer.register.process');
+
+
+    Route::get('/dashboard', function () {
+        return view('buyer.dashboard');
+    })
+    ->middleware('auth')
+    ->name('buyer.dashboard');
+
+});
+
+Route::post('/logout', function () {
+
+    Auth::logout();
+
+    request()->session()->invalidate();
+
+    request()->session()->regenerateToken();
+
+    return redirect('/');
+
+})->name('logout');
 require __DIR__.'/auth.php';
