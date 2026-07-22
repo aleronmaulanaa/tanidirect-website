@@ -7,128 +7,64 @@ use App\Models\PriceReference;
 
 class LandingController extends Controller
 {
-    public function index()
-    {
-        /*
-        |--------------------------------------------------------------------------
-        | Produk Aktif dari Petani
-        |--------------------------------------------------------------------------
-        */
-        $products = Product::with('producer')
-            ->where('is_active', true)
-            ->latest()
-            ->limit(6)
-            ->get();
+public function index()
+{
+    $products = Product::with('producer')
+        ->where('is_active', true)
+        ->latest()
+        ->limit(4)
+        ->get();
 
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Harga Referensi Komoditas
-        |--------------------------------------------------------------------------
-        |
-        | Digunakan ketika belum ada produk petani.
-        | Data berasal dari BPS dan Siskaperbapo.
-        |
-        |--------------------------------------------------------------------------
-        */
-
-        $priceReferences = collect();
+    $komoditasUnggulan = [
+        'BERAS MEDIUM',
+        'BERAS PREMIUM',
+        'JAGUNG PIPIL KERING',
+        'KEDELAI',
+    ];
 
 
-        if ($products->isEmpty()) {
+    $priceReferences = collect();
 
 
-            $komoditasUnggulan = [
-                'BERAS MEDIUM',
-                'BERAS PREMIUM',
-                'JAGUNG PIPIL KERING',
-                'KEDELAI',
-            ];
+    foreach ($komoditasUnggulan as $komoditas) {
+
+        $produsen = PriceReference::where(
+                'kategori_komoditas',
+                $komoditas
+            )
+            ->where('tipe_harga', 'produsen')
+            ->where('harga', '>', 0)
+            ->orderByDesc('periode')
+            ->first();
 
 
-
-            foreach ($komoditasUnggulan as $komoditas) {
-
-
-                /*
-                |--------------------------------------------------------------------------
-                | Harga Produsen (Petani)
-                |--------------------------------------------------------------------------
-                */
-
-                $produsen = PriceReference::where(
-                        'kategori_komoditas',
-                        $komoditas
-                    )
-                    ->where('tipe_harga', 'produsen')
-                    ->where('harga', '>', 0)
-                    ->orderByDesc('periode')
-                    ->first();
-                /*
-                |--------------------------------------------------------------------------
-                | Harga Konsumen (Pasar)
-                |--------------------------------------------------------------------------
-                */
-
-                $konsumen = PriceReference::where(
-                        'kategori_komoditas',
-                        $komoditas
-                    )
-                    ->where('tipe_harga', 'konsumen')
-                    ->where('harga', '>', 0)
-                    ->orderByDesc('periode')
-                    ->first();
-
-                if ($produsen) {
+        $konsumen = PriceReference::where(
+                'kategori_komoditas',
+                $komoditas
+            )
+            ->where('tipe_harga', 'konsumen')
+            ->where('harga', '>', 0)
+            ->orderByDesc('periode')
+            ->first();
 
 
-                    $hargaProdusen = (float) $produsen->harga;
+        if ($produsen) {
 
-                    $hargaKonsumen = $konsumen
-                        ? (float) $konsumen->harga
-                        : null;
-
-
-
-                    $selisih = null;
-
-
-                    if ($hargaKonsumen) {
-
-                        $selisih = round(
-                            (($hargaKonsumen - $hargaProdusen) / $hargaKonsumen) * 100
-                        );
-
-                    }
-
-
-
-                    $priceReferences->push([
-
-                        'kategori' => $komoditas,
-
-                        'harga_produsen' => $hargaProdusen,
-
-                        'harga_konsumen' => $hargaKonsumen,
-
-                        'selisih_harga' => $selisih,
-
-                        'periode' => $produsen->periode,
-
-                    ]);
-
-                }
-
-            }
+            $priceReferences->push([
+                'kategori' => $komoditas,
+                'harga_produsen' => $produsen->harga,
+                'harga_konsumen' => $konsumen?->harga,
+                'periode' => $produsen->periode,
+            ]);
 
         }
-
-
-
-        return view('welcome', compact(
-            'products',
-            'priceReferences'
-        ));
     }
+
+
+    return view('welcome', compact(
+        'products',
+        'priceReferences'
+    ));
+}
 }
