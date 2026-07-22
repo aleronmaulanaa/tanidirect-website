@@ -33,3 +33,407 @@
     }
 
 }
+
+
+
+/* ============================= */
+/* Landing Page Animations        */
+/* ============================= */
+
+
+/* Fade muncul dari bawah */
+
+@keyframes fade-up {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+
+.animate-fade-up {
+
+    animation: fade-up 0.8s ease-out forwards;
+
+}
+
+
+
+
+
+/* Fade muncul perlahan */
+
+@keyframes fade-in {
+
+    from {
+        opacity: 0;
+    }
+
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+
+.animate-fade-in {
+
+    animation: fade-in 1s ease-out forwards;
+
+}
+
+
+
+
+
+/* Floating lembut untuk background decoration */
+
+@keyframes float-slow {
+
+    0%,
+    100% {
+
+        transform: translateY(0);
+
+    }
+
+
+    50% {
+
+        transform: translateY(-15px);
+
+    }
+
+}
+
+
+
+.animate-float-slow {
+
+    animation: float-slow 6s ease-in-out infinite;
+
+}
+
+
+
+
+
+/* Floating lebih kecil */
+
+@keyframes float {
+
+    0%,
+    100% {
+
+        transform: translateY(0);
+
+    }
+
+
+    50% {
+
+        transform: translateY(-8px);
+
+    }
+
+}
+
+
+
+.animate-float {
+
+    animation: float 4s ease-in-out infinite;
+
+}
+
+
+
+
+
+/* Efek tombol CTA */
+
+@keyframes pulse-soft {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+
+    }
+
+
+    50% {
+
+        transform: scale(1.03);
+
+    }
+
+}
+
+
+
+.animate-pulse-soft {
+
+    animation: pulse-soft 3s ease-in-out infinite;
+
+}
+
+
+
+
+
+/* Efek goyang ringan untuk ilustrasi/tanaman */
+
+@keyframes sway {
+
+    0% {
+
+        transform: rotate(0deg);
+
+    }
+
+
+    50% {
+
+        transform: rotate(2deg);
+
+    }
+
+
+    100% {
+
+        transform: rotate(0deg);
+
+    }
+
+}
+
+
+
+.animate-sway {
+
+    animation: sway 3s ease-in-out infinite;
+
+}
+
+
+
+
+
+/* Hover lebih smooth */
+
+.hover-lift {
+
+    transition: all 0.3s ease;
+
+}
+
+
+.hover-lift:hover {
+
+    transform: translateY(-8px);
+
+}
+
+
+
+
+
+/* ============================= */
+/* Custom Scrollbar (Optional)    */
+/* ============================= */
+
+
+::-webkit-scrollbar {
+
+    width: 8px;
+
+}
+
+
+::-webkit-scrollbar-track {
+
+    background: #F8FAF5;
+
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background: #15803D;
+
+    border-radius: 999px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+    background: #166534;
+
+}
+
+/* ============================= */
+/* CTA Advanced Animation         */
+/* ============================= */
+
+@keyframes gradient-move {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-move 8s ease infinite;
+}
+
+
+
+@keyframes float-icon {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-18px) rotate(8deg);
+    }
+
+}
+
+
+.animate-float-icon {
+    animation: float-icon 5s ease-in-out infinite;
+}
+
+
+
+@keyframes slide-line {
+
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+
+}
+
+
+.animate-slide-line {
+    animation: slide-line 3s linear infinite;
+}
+
+/* CTA Playful Animation */
+
+
+@keyframes bounce-soft {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+}
+
+
+.animate-bounce-soft {
+    animation: bounce-soft 4s ease-in-out infinite;
+}
+
+
+
+@keyframes rotate-leaf {
+
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(15deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+
+}
+
+
+.animate-leaf {
+    animation: rotate-leaf 3s ease-in-out infinite;
+}
+
+
+
+@keyframes pop-up {
+
+    from {
+        opacity: 0;
+        transform: scale(.85) translateY(30px);
+    }
+
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+.animate-pop-up {
+    animation: pop-up .8s ease-out forwards;
+}
+
+/* ============================= */
+/* Logo Marquee Animation         */
+/* ============================= */
+
+
+@keyframes marquee {
+
+    from {
+        transform: translateX(0);
+    }
+
+
+    to {
+        transform: translateX(-50%);
+    }
+
+}
+
+
+.animate-marquee {
+
+    animation: marquee 15s linear infinite;
+
+}

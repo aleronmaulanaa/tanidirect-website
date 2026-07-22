@@ -45,9 +45,12 @@
     {{-- Group Buy --}}
     @include('components.landing.group-buy')
 
+
+    @include('components.landing.producer')
+
     {{-- Call To Action --}}
     @include('components.landing.cta')
-
+ 
     {{-- Footer --}}
     @include('components.landing.footer')
 
