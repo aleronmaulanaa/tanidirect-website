@@ -10,10 +10,13 @@
     <header class="border-b border-green-100 bg-white">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
             <a href="{{ route('landing') }}"><img src="{{ asset('images/logo.png') }}" alt="TaniDirect" class="h-9 w-auto"></a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="rounded-xl px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-red-50 hover:text-red-600">Logout</button>
-            </form>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('profile') }}" class="rounded-xl border border-green-200 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-50">Profil</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="rounded-xl px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-red-50 hover:text-red-600">Logout</button>
+                </form>
+            </div>
         </div>
     </header>
 

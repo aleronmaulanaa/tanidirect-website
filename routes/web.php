@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardRedirectController;
 use App\Http\Controllers\ProducerProductController;
 use App\Http\Controllers\BuyerProductController;
 use App\Http\Controllers\BuyerOrderController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -60,9 +61,10 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::view('/profile', 'profile')
-    ->middleware('auth')
-    ->name('profile');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 
 

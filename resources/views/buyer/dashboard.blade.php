@@ -77,25 +77,31 @@
 
 
 
-        <form
-            method="POST"
-            action="{{ route('logout') }}">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('profile') }}" class="rounded-xl border border-green-200 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-50">
+                Profil
+            </a>
+
+            <form
+                method="POST"
+                action="{{ route('logout') }}">
 
 
-            @csrf
+                @csrf
 
 
-            <button
-                class="rounded-xl bg-green-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-800">
+                <button
+                    class="rounded-xl bg-green-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-800">
 
 
-                Logout
+                    Logout
 
 
-            </button>
+                </button>
 
 
-        </form>
+            </form>
+        </div>
 
 
 
