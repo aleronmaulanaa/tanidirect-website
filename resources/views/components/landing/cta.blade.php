@@ -138,7 +138,7 @@
                     {{-- Buyer --}}
 
                     <a
-                        href="{{ route('register') }}"
+                        href="{{ route('buyer.register') }}"
                         class="animate-pulse-soft inline-flex items-center justify-center rounded-xl bg-white px-9 py-4 font-semibold text-green-700 transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
 
 

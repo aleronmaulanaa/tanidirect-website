@@ -39,25 +39,16 @@ class BuyerAuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt([...$credentials, 'role' => 'pembeli'])) {
 
             $request->session()->regenerate();
-
-            if (Auth::user()->role !== 'pembeli') {
-
-                Auth::logout();
-
-                return back()->withErrors([
-                    'email' => 'Akun ini bukan akun pembeli.'
-                ]);
-            }
 
             return redirect()
                 ->route('buyer.dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.'
+            'email' => 'Email, password, atau jenis akun tidak sesuai.'
         ]);
     }
 }

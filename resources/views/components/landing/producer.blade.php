@@ -138,10 +138,10 @@
                     class="mt-10">
 
 
-                    @auth
+                    @if(auth()->user()?->role === 'produsen')
 
                         <a
-                            href="#"
+                            href="{{ route('producer.dashboard') }}"
                             class="inline-flex items-center justify-center rounded-xl bg-green-700 px-8 py-3 font-semibold text-white transition hover:bg-green-800">
 
                             Mulai Jual Produk

@@ -34,17 +34,18 @@ class BuyerDashboardController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Fallback Komoditas Jika Produk Petani Belum Ada
+        | Referensi Harga Pasar
         |--------------------------------------------------------------------------
+        |
+        | Selalu ditampilkan sebagai pembanding harga, terlepas dari ada atau
+        | tidaknya produk yang dijual produsen.
+        |
         */
 
         $priceReferences = collect();
 
 
-        if ($products->isEmpty()) {
-
-
-            $komoditasUnggulan = [
+        $komoditasUnggulan = [
 
                 'BERAS MEDIUM',
 
@@ -54,11 +55,11 @@ class BuyerDashboardController extends Controller
 
                 'KEDELAI',
 
-            ];
+        ];
 
 
 
-            foreach ($komoditasUnggulan as $komoditas) {
+        foreach ($komoditasUnggulan as $komoditas) {
 
 
                 $hargaProdusen = PriceReference::where(
@@ -83,7 +84,7 @@ class BuyerDashboardController extends Controller
 
 
 
-                if ($hargaProdusen) {
+            if ($hargaProdusen) {
 
 
                     $priceReferences->push([
@@ -97,8 +98,6 @@ class BuyerDashboardController extends Controller
                         'periode' => $hargaProdusen->periode,
 
                     ]);
-
-                }
 
             }
 

@@ -113,6 +113,12 @@
 
 <main class="mx-auto max-w-7xl px-6 py-10">
 
+@if(session('success'))
+<div class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-semibold text-green-800">
+    {{ session('success') }}
+</div>
+@endif
+
 
 
 
@@ -506,6 +512,11 @@
 
 </p>
 
+<a href="{{ route('buyer.products.show', $product) }}"
+    class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-green-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-green-800">
+    Lihat & Pesan Produk
+</a>
+
 
 </div>
 
@@ -688,6 +699,36 @@ class="text-sm font-normal text-gray-500">
 </div>
 
 
+</section>
+
+{{-- Pesanan Saya --}}
+
+<section id="pesanan" class="mt-14">
+    <div class="flex items-end justify-between gap-4">
+        <div>
+            <h2 class="text-3xl font-extrabold text-gray-900">Pesanan Saya</h2>
+            <p class="mt-2 text-gray-500">Pantau pesanan langsung yang telah Anda buat.</p>
+        </div>
+    </div>
+
+    <div class="mt-6 overflow-hidden rounded-3xl bg-white shadow-sm">
+        @forelse($orders as $order)
+            <div class="flex flex-col gap-4 border-b border-gray-100 p-5 last:border-0 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <p class="font-bold text-gray-900">{{ $order->product->nama_produk }}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{ $order->jumlah }} {{ $order->product->satuan }} · {{ $order->created_at->format('d M Y') }}</p>
+                </div>
+                <div class="flex items-center gap-4 sm:text-right">
+                    <div>
+                        <p class="font-bold text-green-700">Rp {{ number_format($order->grand_total ?: $order->total_harga, 0, ',', '.') }}</p>
+                        <span class="mt-1 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">{{ ucfirst($order->status_pengiriman) }}</span>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="p-8 text-center text-sm text-gray-500">Belum ada pesanan. Pilih produk petani untuk mulai berbelanja.</div>
+        @endforelse
+    </div>
 </section>
 
 

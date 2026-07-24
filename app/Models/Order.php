@@ -17,12 +17,18 @@ class Order extends Model
         'order_pool_id',
         'jumlah',
         'total_harga',
+        'subtotal',
+        'service_fee',
+        'grand_total',
         'status_pengiriman',
     ];
 
     protected $casts = [
         'jumlah' => 'integer',
         'total_harga' => 'decimal:2',
+        'subtotal' => 'decimal:2',
+        'service_fee' => 'decimal:2',
+        'grand_total' => 'decimal:2',
     ];
 
     public function buyer(): BelongsTo

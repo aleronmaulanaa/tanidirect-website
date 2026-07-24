@@ -50,27 +50,16 @@ class ProducerAuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt([...$credentials, 'role' => 'produsen'])) {
 
             $request->session()->regenerate();
-
-            $user = Auth::user();
-
-            if ($user->role !== 'produsen') {
-
-                Auth::logout();
-
-                return back()->withErrors([
-                    'email' => 'Akun ini bukan akun produsen.'
-                ]);
-            }
 
             return redirect()
                 ->route('producer.dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.'
+            'email' => 'Email, password, atau jenis akun tidak sesuai.'
         ]);
     }
 }

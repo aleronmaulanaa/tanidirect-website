@@ -226,10 +226,10 @@
 
 
 
-                    @auth
+                    @if(auth()->user()?->role === 'pembeli')
 
                     <a
-                        href="#"
+                        href="{{ route('order-pool.index') }}"
                         class="rounded-xl bg-green-700 px-7 py-3 text-center font-semibold text-white hover:bg-green-800">
 
 
@@ -243,7 +243,7 @@
 
 
                     <a
-                        href="{{ route('register') }}"
+                        href="{{ route('buyer.register') }}"
                         class="rounded-xl bg-green-700 px-7 py-3 text-center font-semibold text-white hover:bg-green-800">
 
 

@@ -10,6 +10,10 @@ use App\Http\Controllers\OrderPoolController;
 use App\Http\Controllers\ProducerAuthController;
 use App\Http\Controllers\BuyerAuthController;
 use App\Http\Controllers\BuyerDashboardController;
+use App\Http\Controllers\DashboardRedirectController;
+use App\Http\Controllers\ProducerProductController;
+use App\Http\Controllers\BuyerProductController;
+use App\Http\Controllers\BuyerOrderController;
 
 
 /*
@@ -29,13 +33,9 @@ Route::get('/', [LandingController::class, 'index'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::view('/dashboard', 'dashboard')
-        ->name('dashboard');
-
-
-});
+Route::get('/dashboard', DashboardRedirectController::class)
+    ->middleware('auth')
+    ->name('dashboard');
 
 
 
@@ -73,7 +73,7 @@ Route::view('/profile', 'profile')
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware('role:pembeli,produsen')->group(function () {
 
     Route::get('/price-tracker', [
         PriceTrackerController::class,
@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware('role:pembeli')->group(function () {
 
     Route::controller(OrderPoolController::class)
         ->prefix('order-pool')
@@ -131,6 +131,7 @@ Route::prefix('producer')->group(function () {
         return view('producer.auth.login');
 
     })
+    ->middleware('guest')
     ->name('producer.login');
 
 
@@ -139,6 +140,7 @@ Route::prefix('producer')->group(function () {
         ProducerAuthController::class,
         'login'
     ])
+    ->middleware('guest')
     ->name('producer.login.process');
 
 
@@ -148,6 +150,7 @@ Route::prefix('producer')->group(function () {
         return view('producer.auth.register');
 
     })
+    ->middleware('guest')
     ->name('producer.register');
 
 
@@ -156,15 +159,8 @@ Route::prefix('producer')->group(function () {
         ProducerAuthController::class,
         'register'
     ])
+    ->middleware('guest')
     ->name('producer.register.process');
-
-
-
-    Route::post('/logout', [
-        ProducerAuthController::class,
-        'logout'
-    ])
-    ->name('producer.logout');
 
 
 
@@ -173,8 +169,22 @@ Route::prefix('producer')->group(function () {
         return view('producer.dashboard');
 
     })
-    ->middleware('auth')
+    ->middleware('role:produsen')
     ->name('producer.dashboard');
+
+    Route::middleware('role:produsen')
+        ->controller(ProducerProductController::class)
+        ->prefix('products')
+        ->name('producer.products.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{product}/edit', 'edit')->name('edit');
+            Route::put('/{product}', 'update')->name('update');
+            Route::patch('/{product}/status', 'toggleStatus')->name('status');
+            Route::delete('/{product}', 'destroy')->name('destroy');
+        });
 
 
 });
@@ -197,6 +207,7 @@ Route::prefix('buyer')->group(function () {
         return view('buyer.auth.login');
 
     })
+    ->middleware('guest')
     ->name('buyer.login');
 
 
@@ -205,6 +216,7 @@ Route::prefix('buyer')->group(function () {
         BuyerAuthController::class,
         'login'
     ])
+    ->middleware('guest')
     ->name('buyer.login.process');
 
 
@@ -214,6 +226,7 @@ Route::prefix('buyer')->group(function () {
         return view('buyer.auth.register');
 
     })
+    ->middleware('guest')
     ->name('buyer.register');
 
 
@@ -222,6 +235,7 @@ Route::prefix('buyer')->group(function () {
         BuyerAuthController::class,
         'register'
     ])
+    ->middleware('guest')
     ->name('buyer.register.process');
 
 
@@ -238,7 +252,7 @@ Route::prefix('buyer')->group(function () {
 */
 
 Route::prefix('buyer')
-    ->middleware('auth')
+    ->middleware('role:pembeli')
     ->group(function () {
 
 
@@ -247,6 +261,12 @@ Route::prefix('buyer')
             'index'
         ])
         ->name('buyer.dashboard');
+
+        Route::get('/products/{product}', [BuyerProductController::class, 'show'])
+            ->name('buyer.products.show');
+
+        Route::post('/products/{product}/orders', [BuyerOrderController::class, 'store'])
+            ->name('buyer.orders.store');
 
 
     });
