@@ -51,7 +51,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('buyer.orders.store', $product) }}" method="POST" class="mt-8 border-t border-gray-100 pt-7">
+                <form action="{{ route('buyer.orders.checkout', $product) }}" method="POST" class="mt-8 border-t border-gray-100 pt-7">
                     @csrf
                     @if($errors->any())
                         <div class="mb-5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{{ $errors->first() }}</div>
@@ -64,7 +64,7 @@
                             {{ $product->stok === 0 ? 'Stok Habis' : 'Pesan Sekarang' }}
                         </button>
                     </div>
-                    <p class="mt-3 text-xs leading-5 text-gray-500">Pesanan akan dicatat dengan status “dipesan”. Petani akan memperbarui status setelah pesanan diproses.</p>
+                    <p class="mt-3 text-xs leading-5 text-gray-500">Anda akan diarahkan ke halaman pembayaran simulasi sebelum pesanan masuk ke daftar Pesanan Saya.</p>
                 </form>
             </div>
         </section>

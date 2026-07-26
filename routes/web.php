@@ -267,6 +267,9 @@ Route::prefix('buyer')
         Route::get('/products/{product}', [BuyerProductController::class, 'show'])
             ->name('buyer.products.show');
 
+        Route::post('/products/{product}/orders/checkout', [BuyerOrderController::class, 'checkout'])
+            ->name('buyer.orders.checkout');
+
         Route::post('/products/{product}/orders', [BuyerOrderController::class, 'store'])
             ->name('buyer.orders.store');
 

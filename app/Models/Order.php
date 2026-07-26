@@ -21,6 +21,10 @@ class Order extends Model
         'service_fee',
         'grand_total',
         'status_pengiriman',
+        'payment_method',
+        'payment_status',
+        'midtrans_order_id',
+        'midtrans_transaction_id',
     ];
 
     protected $casts = [
