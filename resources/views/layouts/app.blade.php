@@ -42,6 +42,8 @@
 
     </div>
 
+    @include('components.chatbot.widget')
+
     {{-- Livewire Scripts --}}
     @livewireScripts
 

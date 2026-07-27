@@ -26,5 +26,7 @@
                 {{ $slot }}
             </div>
         </div>
+
+        @include('components.chatbot.widget')
     </body>
 </html>

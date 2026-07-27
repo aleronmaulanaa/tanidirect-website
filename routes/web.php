@@ -15,6 +15,7 @@ use App\Http\Controllers\ProducerProductController;
 use App\Http\Controllers\BuyerProductController;
 use App\Http\Controllers\BuyerOrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatbotController;
 
 
 /*
@@ -26,6 +27,8 @@ use App\Http\Controllers\ProfileController;
 Route::get('/', [LandingController::class, 'index'])
     ->name('landing');
 
+Route::post('/chatbot/message', [ChatbotController::class, 'message'])
+    ->name('chatbot.message');
 
 
 /*
