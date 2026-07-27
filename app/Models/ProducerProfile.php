@@ -35,3 +35,4 @@ class ProducerProfile extends Model
         return $this->hasMany(Review::class, 'producer_id');
     }
 }
+
