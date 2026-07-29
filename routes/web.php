@@ -18,6 +18,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ProducerOrderController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminProducerController;
 
 
 /*
@@ -55,6 +56,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
+
+    Route::get('/admin/producers', [AdminProducerController::class, 'index'])
+        ->name('admin.producers.index');
+
+    Route::post('/admin/producers/{user}/verify', [AdminProducerController::class, 'verify'])
+        ->name('admin.producers.verify');
 
 });
 

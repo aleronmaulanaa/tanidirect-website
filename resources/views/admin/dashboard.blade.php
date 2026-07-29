@@ -18,7 +18,13 @@
                 </span>
             </div>
             <div class="flex items-center gap-3">
-                <a href="{{ route('profile') }}" class="rounded-xl border border-green-200 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-50">
+                <a href="{{ route('admin.dashboard') }}" class="rounded-xl border border-green-200 bg-green-50 px-4 py-2 text-sm font-semibold text-green-700 transition">
+                    Dashboard
+                </a>
+                <a href="{{ route('admin.producers.index') }}" class="rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">
+                    Manajemen Produsen
+                </a>
+                <a href="{{ route('profile') }}" class="rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">
                     Profil
                 </a>
                 <form method="POST" action="{{ route('logout') }}">
