@@ -44,7 +44,12 @@ class ProducerOrderController extends Controller
     {
         $this->ensureOwnership($request, $order);
 
-        $order->load(['product', 'buyer', 'shipmentStatusLogs' => fn ($q) => $q->oldest()]);
+        $order->load([
+            'product',
+            'buyer',
+            'shipmentStatusLogs' => fn ($q) => $q->oldest(),
+            'reviews',
+        ]);
 
         $nextStatus = self::STATUS_FLOW[$order->status_pengiriman] ?? null;
 

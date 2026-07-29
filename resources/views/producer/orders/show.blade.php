@@ -271,6 +271,57 @@
 
         </div>
 
+        {{-- Card Ulasan Pembeli --}}
+        @php
+            $buyerReview = $order->reviews->first();
+        @endphp
+
+        <div class="mt-8 rounded-3xl bg-white p-6 shadow-sm border border-gray-100/80">
+            <div class="flex items-center gap-3 border-b border-gray-100 pb-4">
+                <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-100 text-xl shadow-2xs">⭐</span>
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">Ulasan Pembeli</h2>
+                    <p class="text-xs text-gray-500">Penilaian kualitas produk dan pengalaman belanja dari pembeli.</p>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                @if($buyerReview)
+                    <div class="rounded-2xl border border-green-200 bg-green-50/50 p-5">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-green-100 pb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-gray-900">{{ $order->buyer->name }}</span>
+                                <span class="text-xs text-gray-400">•</span>
+                                <time class="text-xs text-gray-500">{{ $buyerReview->created_at->format('d M Y, H:i') }}</time>
+                            </div>
+                            <div class="flex items-center gap-1 rounded-full bg-amber-50 px-3.5 py-1 text-sm font-extrabold text-amber-700 ring-1 ring-amber-200/70">
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $buyerReview->rating)
+                                        <svg class="h-4 w-4 fill-amber-400 text-amber-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    @else
+                                        <svg class="h-4 w-4 fill-gray-200 text-gray-200" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    @endif
+                                @endfor
+                                <span class="ml-1.5 text-xs font-bold text-gray-700">({{ $buyerReview->rating }}/5)</span>
+                            </div>
+                        </div>
+
+                        @if($buyerReview->komentar)
+                            <p class="mt-3 text-sm italic leading-relaxed text-gray-700 bg-white/80 p-3.5 rounded-xl border border-green-100">
+                                "{{ $buyerReview->komentar }}"
+                            </p>
+                        @else
+                            <p class="mt-3 text-xs italic text-gray-400">Pembeli memberikan rating bintang tanpa ulasan tertulis.</p>
+                        @endif
+                    </div>
+                @else
+                    <div class="rounded-2xl border border-dashed border-gray-200 bg-gray-50/50 p-6 text-center">
+                        <p class="text-sm font-medium text-gray-400">Pembeli belum memberikan ulasan</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
     </main>
 
 </body>

@@ -290,6 +290,9 @@ Route::prefix('buyer')
         Route::get('/orders/{order}/tracking', [BuyerOrderController::class, 'tracking'])
             ->name('buyer.orders.tracking');
 
+        Route::post('/orders/{order}/review', [BuyerOrderController::class, 'storeReview'])
+            ->name('buyer.orders.review');
+
 
     });
 
