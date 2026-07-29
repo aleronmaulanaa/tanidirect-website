@@ -16,6 +16,7 @@ use App\Http\Controllers\BuyerProductController;
 use App\Http\Controllers\BuyerOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\ProducerOrderController;
 
 
 /*
@@ -191,6 +192,16 @@ Route::prefix('producer')->group(function () {
             Route::delete('/{product}', 'destroy')->name('destroy');
         });
 
+    Route::middleware('role:produsen')
+        ->controller(ProducerOrderController::class)
+        ->prefix('orders')
+        ->name('producer.orders.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order}', 'show')->name('show');
+            Route::patch('/{order}/status', 'updateStatus')->name('updateStatus');
+        });
+
 
 });
 
@@ -275,6 +286,9 @@ Route::prefix('buyer')
 
         Route::post('/products/{product}/orders', [BuyerOrderController::class, 'store'])
             ->name('buyer.orders.store');
+
+        Route::get('/orders/{order}/tracking', [BuyerOrderController::class, 'tracking'])
+            ->name('buyer.orders.tracking');
 
 
     });

@@ -171,4 +171,16 @@ class BuyerOrderController extends Controller
         return redirect()->to(route('buyer.dashboard').'#pesanan')
             ->with('success', 'Pesanan berhasil dibuat. Petani akan memproses pesanan Anda.');
     }
+
+    /**
+     * Halaman tracking pesanan untuk pembeli.
+     */
+    public function tracking(Request $request, Order $order)
+    {
+        abort_unless($order->buyer_id === $request->user()->id, 403);
+
+        $order->load(['product.producer.user', 'shipmentStatusLogs' => fn ($q) => $q->oldest()]);
+
+        return view('buyer.orders.tracking', compact('order'));
+    }
 }

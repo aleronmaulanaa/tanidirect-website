@@ -28,12 +28,18 @@
             <a href="{{ route('producer.products.create') }}" class="mt-7 inline-flex rounded-xl bg-white px-5 py-3 text-sm font-bold text-green-700 transition hover:bg-green-50">+ Tambah Produk</a>
         </section>
 
-        <section class="mt-8 grid gap-5 md:grid-cols-3">
+        <section class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             <a href="{{ route('producer.products.index') }}" class="rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-100 text-xl">🌾</div>
                 <h2 class="mt-5 text-lg font-bold">Produk Saya</h2>
                 <p class="mt-2 text-sm leading-6 text-gray-500">Tambah, ubah, aktifkan, atau nonaktifkan hasil panen Anda.</p>
                 <span class="mt-5 inline-block text-sm font-bold text-green-700">Kelola produk →</span>
+            </a>
+            <a href="{{ route('producer.orders.index') }}" class="rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-100 text-xl">📦</div>
+                <h2 class="mt-5 text-lg font-bold">Pesanan Masuk</h2>
+                <p class="mt-2 text-sm leading-6 text-gray-500">Lihat dan kelola pesanan dari pembeli, perbarui status pengiriman.</p>
+                <span class="mt-5 inline-block text-sm font-bold text-green-700">Kelola pesanan →</span>
             </a>
             <a href="#notifikasi" class="rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-xl">🔔</div>
