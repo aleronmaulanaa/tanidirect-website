@@ -17,6 +17,7 @@ use App\Http\Controllers\BuyerOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ProducerOrderController;
+use App\Http\Controllers\AdminDashboardController;
 
 
 /*
@@ -50,9 +51,9 @@ Route::get('/dashboard', DashboardRedirectController::class)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::view('/admin/dashboard', 'admin.dashboard')
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
 
 });
