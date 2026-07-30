@@ -33,6 +33,9 @@ Route::get('/', [LandingController::class, 'index'])
 Route::post('/chatbot/message', [ChatbotController::class, 'message'])
     ->name('chatbot.message');
 
+Route::post('/chatbot/send', [ChatbotController::class, 'send'])
+    ->name('chatbot.send');
+
 
 /*
 |--------------------------------------------------------------------------

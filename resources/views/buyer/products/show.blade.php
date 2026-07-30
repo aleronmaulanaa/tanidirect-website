@@ -35,8 +35,27 @@
 
             <div class="p-7 sm:p-10">
                 <span class="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">LANGSUNG DARI PETANI</span>
-                <h1 class="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">{{ $product->nama_produk }}</h1>
-                <p class="mt-3 text-sm text-gray-500">{{ $product->producer->user->name }} · {{ $product->producer->kabupaten_kota }}</p>
+                <h1 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">{{ $product->nama_produk }}</h1>
+                <p class="mt-2 text-sm text-gray-500">{{ $product->producer->user->name ?? 'Petani TaniDirect' }} · {{ $product->producer->kabupaten_kota ?? '-' }}</p>
+
+                {{-- Rating & Total Ulasan --}}
+                @php
+                    $avgRating = $product->average_rating;
+                    $totalReviews = $product->total_reviews;
+                @endphp
+                <div class="mt-3 flex items-center gap-2">
+                    @if($totalReviews > 0)
+                        <div class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3.5 py-1 text-xs font-extrabold text-amber-700 ring-1 ring-amber-200">
+                            <span class="text-amber-500 text-sm">⭐</span>
+                            <span>{{ number_format($avgRating, 1) }}</span>
+                            <span class="font-normal text-gray-500">({{ $totalReviews }} Ulasan)</span>
+                        </div>
+                    @else
+                        <div class="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3.5 py-1 text-xs font-medium text-gray-500">
+                            <span>⭐ Belum ada ulasan</span>
+                        </div>
+                    @endif
+                </div>
 
                 <div class="mt-7 rounded-2xl bg-[#F3FAF2] p-5">
                     <p class="text-sm font-medium text-gray-500">Harga petani</p>

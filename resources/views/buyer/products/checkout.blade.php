@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran | TaniDirect</title>
+    <title>Pembayaran Midtrans | TaniDirect</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#F8FAF5] text-gray-900">
@@ -11,7 +11,7 @@
         <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
             <a href="{{ route('buyer.dashboard') }}" class="flex items-center gap-3">
                 <img src="{{ asset('images/logo.png') }}" alt="TaniDirect" class="h-9 w-auto">
-                <span class="hidden text-sm font-semibold text-gray-600 sm:inline">Pembayaran Simulasi</span>
+                <span class="hidden text-sm font-semibold text-gray-600 sm:inline">Pembayaran Midtrans</span>
             </a>
             <a href="{{ route('buyer.products.show', $product) }}" class="rounded-xl px-4 py-2 text-sm font-semibold text-green-700 hover:bg-green-50">← Batal</a>
         </div>
@@ -21,10 +21,10 @@
         <section class="overflow-hidden rounded-[2rem] bg-white shadow-sm">
             <div class="border-b border-gray-100 bg-green-50 px-8 py-8">
                 <div class="flex items-center gap-3">
-                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-green-200 text-lg">🧪</span>
+                    <span class="flex h-10 w-10 items-center justify-center rounded-full bg-green-200 text-lg">💳</span>
                     <div>
-                        <h1 class="text-3xl font-extrabold text-green-700">Pembayaran Simulasi</h1>
-                        <p class="mt-1 text-sm text-gray-600">Konfirmasi pesanan Anda. Pembayaran akan disimulasikan secara otomatis.</p>
+                        <h1 class="text-3xl font-extrabold text-green-700">Pembayaran Midtrans</h1>
+                        <p class="mt-1 text-sm text-gray-600">Selesaikan pembayaran Anda secara aman melalui Midtrans Snap Payment Gateway.</p>
                     </div>
                 </div>
             </div>
@@ -60,42 +60,31 @@
                     </div>
                 </div>
 
-                {{-- Metode Pembayaran (Simulasi) --}}
+                {{-- Metode Pembayaran (Midtrans) --}}
                 <div class="mt-8 grid gap-4">
                     <div class="rounded-3xl bg-white p-6 shadow-sm">
                         <h2 class="font-bold text-gray-900">Metode Pembayaran</h2>
                         <div class="mt-4 rounded-3xl border-2 border-green-200 bg-green-50 px-5 py-4">
                             <div class="flex items-center gap-3">
-                                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-green-200 text-sm">✓</span>
+                                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-green-200 text-sm">🔒</span>
                                 <div>
-                                    <p class="font-semibold text-green-800">Simulasi Pembayaran</p>
-                                    <p class="mt-0.5 text-sm text-green-600">Pesanan akan otomatis tercatat sebagai lunas.</p>
+                                    <p class="font-semibold text-green-800">Midtrans Snap Checkout</p>
+                                    <p class="mt-0.5 text-sm text-green-600">Pilih metode pembayaran (GoPay, Bank Transfer, E-Wallet, dll) via pop-up Midtrans.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Form Konfirmasi --}}
+                    {{-- Tombol Bayar --}}
                     <div class="rounded-3xl bg-white p-6 shadow-sm">
-                        <form action="{{ route('buyer.orders.store', $product) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="jumlah" value="{{ $quantity }}">
-
-                            <button type="submit"
-                                    class="w-full rounded-3xl bg-green-700 px-6 py-4 text-lg font-bold text-white transition hover:bg-green-800 active:scale-[0.98]"
-                                    onclick="return confirm('Konfirmasi pesanan {{ $quantity }} {{ $product->satuan }} {{ $product->nama_produk }}?')">
-                                ✅ KONFIRMASI PESANAN
-                            </button>
-                        </form>
-                        <p class="mt-3 text-center text-sm text-gray-500">Pesanan akan langsung masuk ke sistem. Produsen akan segera memprosesnya.</p>
+                        <button id="pay-button" class="w-full rounded-3xl bg-green-700 px-6 py-4 text-lg font-bold text-white transition hover:bg-green-800 active:scale-[0.98]">
+                            💳 BAYAR SEKARANG
+                        </button>
+                        <p class="mt-3 text-center text-sm text-gray-500">Anda akan diarahkan ke pop-up Midtrans untuk menyelesaikan pembayaran.</p>
                     </div>
                 </div>
 
-                {{-- ================================================================
-                     MIDTRANS SNAP CHECKOUT (ASLI) — dinonaktifkan karena simulasi.
-                     Aktifkan kembali jika ingin integrasi payment gateway sungguhan.
-                     ================================================================ --}}
-                {{--
+                {{-- Hidden Form untuk Submit Hasil Transaksi Midtrans --}}
                 <form id="payment-form" action="{{ route('buyer.orders.store', $product) }}" method="POST" class="hidden">
                     @csrf
                     <input type="hidden" name="jumlah" value="{{ $quantity }}">
@@ -105,6 +94,7 @@
                     <input type="hidden" name="midtrans_payment_status" id="midtrans_payment_status">
                 </form>
 
+                {{-- Script Midtrans Snap JS --}}
                 <script src="{{ filter_var(config('services.midtrans.is_production'), FILTER_VALIDATE_BOOLEAN) ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
                 <script>
                     function fillMidtransResult(result) {
@@ -136,7 +126,6 @@
                         });
                     });
                 </script>
-                --}}
             </div>
         </section>
     </main>

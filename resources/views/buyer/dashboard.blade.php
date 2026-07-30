@@ -487,14 +487,24 @@
 
 
 
-<p
-    class="mt-2 text-sm text-gray-500">
-
-
+<p class="mt-2 text-sm text-gray-500">
     {{ $product->producer->kabupaten_kota ?? 'Indonesia' }}
-
-
 </p>
+
+{{-- Rating Bintang --}}
+@php
+    $avgRating = $product->average_rating;
+    $totalReviews = $product->total_reviews;
+@endphp
+<div class="mt-2 flex items-center gap-1.5 text-xs font-semibold">
+    @if($totalReviews > 0)
+        <span class="text-amber-500">⭐</span>
+        <span class="text-gray-900 font-bold">{{ number_format($avgRating, 1) }}</span>
+        <span class="font-normal text-gray-400">({{ $totalReviews }})</span>
+    @else
+        <span class="font-normal text-gray-400">⭐ Belum ada ulasan</span>
+    @endif
+</div>
 
 
 

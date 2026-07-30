@@ -43,5 +43,31 @@ class Product extends Model
     {
         return $this->hasMany(Order::class, 'product_id');
     }
+
+    /**
+     * Relasi ulasan produk melalui tabel pesanan (orders).
+     */
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Review::class, Order::class, 'product_id', 'order_id');
+    }
+
+    /**
+     * Accessor untuk nilai rata-rata rating (float 1 desimal, misal 4.8).
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        $avg = $this->reviews()->avg('rating');
+
+        return $avg ? round((float) $avg, 1) : 0.0;
+    }
+
+    /**
+     * Accessor untuk total jumlah ulasan produk.
+     */
+    public function getTotalReviewsAttribute(): int
+    {
+        return $this->reviews()->count();
+    }
 }
 
