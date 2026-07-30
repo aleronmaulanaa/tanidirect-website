@@ -16,6 +16,9 @@ use App\Http\Controllers\BuyerProductController;
 use App\Http\Controllers\BuyerOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\ProducerOrderController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminProducerController;
 
 
 /*
@@ -49,10 +52,16 @@ Route::get('/dashboard', DashboardRedirectController::class)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::view('/admin/dashboard', 'admin.dashboard')
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
+
+    Route::get('/admin/producers', [AdminProducerController::class, 'index'])
+        ->name('admin.producers.index');
+
+    Route::post('/admin/producers/{user}/verify', [AdminProducerController::class, 'verify'])
+        ->name('admin.producers.verify');
 
 });
 
@@ -191,6 +200,16 @@ Route::prefix('producer')->group(function () {
             Route::delete('/{product}', 'destroy')->name('destroy');
         });
 
+    Route::middleware('role:produsen')
+        ->controller(ProducerOrderController::class)
+        ->prefix('orders')
+        ->name('producer.orders.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order}', 'show')->name('show');
+            Route::patch('/{order}/status', 'updateStatus')->name('updateStatus');
+        });
+
 
 });
 
@@ -275,6 +294,12 @@ Route::prefix('buyer')
 
         Route::post('/products/{product}/orders', [BuyerOrderController::class, 'store'])
             ->name('buyer.orders.store');
+
+        Route::get('/orders/{order}/tracking', [BuyerOrderController::class, 'tracking'])
+            ->name('buyer.orders.tracking');
+
+        Route::post('/orders/{order}/review', [BuyerOrderController::class, 'storeReview'])
+            ->name('buyer.orders.review');
 
 
     });

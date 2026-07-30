@@ -1,153 +1,100 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Login Petani | TaniDirect</title>
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<body class="min-h-screen bg-[#F6F8F3] flex items-center justify-center px-5 py-10">
 
-<body class="min-h-screen bg-green-50">
+<div class="w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-xl border border-gray-100/80 md:grid md:grid-cols-2">
 
-<div class="min-h-screen flex items-center justify-center px-6">
-
-    <div class="grid w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-xl md:grid-cols-2">
-
-
-        <div class="hidden bg-green-700 p-10 text-white md:flex md:flex-col md:justify-between">
-
-            <div>
-
-                <h1 class="text-3xl font-bold leading-tight">
-                    Jual Hasil Panen
-                    <span class="text-green-200">
-                        Lebih Mudah
-                    </span>
-                </h1>
-
-                <p class="mt-5 text-sm leading-relaxed text-green-100">
-                    Bergabung bersama TaniDirect untuk menjual hasil panen
-                    langsung kepada pembeli dengan harga yang lebih transparan.
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <p class="text-sm text-green-100">
-                    🌱 Terhubung langsung dengan pembeli
-                </p>
-
-                <p class="mt-2 text-sm text-green-100">
-                    📦 Kelola produk dan pesanan dengan mudah
-                </p>
-
-            </div>
-
+    {{-- Side Banner --}}
+    <div class="hidden bg-gradient-to-br from-green-800 to-emerald-600 p-10 text-white md:flex md:flex-col md:justify-between">
+        <div>
+            <a href="/">
+                <img src="{{ asset('images/logo.png') }}" class="h-10 w-auto brightness-0 invert mb-8" alt="TaniDirect">
+            </a>
+            <h1 class="text-3xl font-extrabold leading-tight">
+                Jual Hasil Panen <span class="text-green-200">Lebih Mudah</span>
+            </h1>
+            <p class="mt-4 text-sm leading-relaxed text-green-50">
+                Bergabung bersama TaniDirect untuk menjual hasil panen langsung kepada pembeli dengan harga yang transparan.
+            </p>
         </div>
 
+        <div class="space-y-2 text-xs font-semibold text-green-100">
+            <p>🌱 Terhubung langsung dengan pembeli</p>
+            <p>📦 Kelola produk dan pesanan dengan praktis</p>
+            <p>📈 Pantau harga pasar secara real-time</p>
+        </div>
+    </div>
 
+    {{-- Form Section --}}
+    <div class="p-8 md:p-10">
 
-        <div class="p-8 md:p-12">
+        <div class="mb-6">
+            <h2 class="text-2xl font-extrabold text-gray-900">Masuk Sebagai Petani</h2>
+            <p class="mt-2 text-sm text-gray-500">Kelola hasil panen dan penjualan Anda.</p>
+        </div>
 
-
-            <div class="mb-8">
-
-                <h2 class="text-2xl font-bold text-gray-900">
-                    Masuk Sebagai Petani
-                </h2>
-
-                <p class="mt-2 text-sm text-gray-500">
-                    Kelola hasil panen dan penjualan Anda.
-                </p>
-
+        @if(session('success'))
+            <div class="mb-5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-800">
+                {{ session('success') }}
             </div>
+        @endif
 
+        <form method="POST" action="{{ route('producer.login.process') }}" class="space-y-4">
+            @csrf
 
-            <form method="POST" action="{{ route('producer.login.process') }}">
-
-                @csrf
-
-
-                <div class="mb-5">
-
-                    <label class="mb-2 block text-sm font-medium text-gray-700">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        name="email"
-                        value="{{ old('email') }}"
-                        class="w-full rounded-xl border-gray-300 focus:border-green-600 focus:ring-green-600"
-                        placeholder="email@contoh.com"
-                    >
-
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-600">
-                            {{ $message }}
-                        </p>
-                    @enderror
-
-                </div>
-
-
-
-                <div class="mb-6">
-
-                    <label class="mb-2 block text-sm font-medium text-gray-700">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        name="password"
-                        class="w-full rounded-xl border-gray-300 focus:border-green-600 focus:ring-green-600"
-                        placeholder="********"
-                    >
-
-                </div>
-
-
-
-                <button
-                    class="w-full rounded-xl bg-green-600 py-3 font-semibold text-white transition hover:bg-green-700"
+            <div>
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    placeholder="email@contoh.com"
+                    required
+                    autofocus
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
                 >
-                    Masuk Sebagai Petani
-                </button>
-
-
-            </form>
-
-
-
-            <div class="mt-6 text-center text-sm text-gray-500">
-
-                Belum memiliki akun?
-
-                    <a 
-                    href="{{ route('producer.register') }}"
-                    class="font-semibold text-green-600 hover:text-green-700">
-
-                    Daftar Sebagai Petani
-
-                    </a>
-
+                @error('email')
+                    <p class="mt-1.5 text-xs font-semibold text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
+            <div>
+                <label for="password" class="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
+                >
+            </div>
 
-        </div>
+            <button
+                type="submit"
+                class="mt-2 w-full rounded-xl bg-green-700 py-3.5 text-sm font-bold text-white shadow-md shadow-green-700/20 transition hover:bg-green-800 active:scale-[0.99]"
+            >
+                Masuk Sebagai Petani
+            </button>
+        </form>
 
+        <p class="mt-6 border-t border-gray-100 pt-6 text-center text-sm text-gray-500">
+            Belum memiliki akun?
+            <a href="{{ route('producer.register') }}" class="font-bold text-green-700 hover:text-green-800">
+                Daftar Sebagai Petani
+            </a>
+        </p>
 
     </div>
 
 </div>
 
-
 </body>
-
 </html>
