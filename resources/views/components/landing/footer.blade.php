@@ -1,4 +1,5 @@
 <footer
+    id="kontak"
     class="bg-green-950 text-white">
 
 
