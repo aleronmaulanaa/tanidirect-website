@@ -25,7 +25,8 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
-# Konfigurasi AI Lokal
+# File kerja internal AI assistant, tidak perlu ikut repository
+CLAUDE.md
 .claude/
 .mcp.json
 boost.json

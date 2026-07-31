@@ -10,10 +10,18 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()?->role === 'admin') {
+        $user = $request->user();
+
+        if ($user?->role === 'admin') {
             return $next($request);
         }
 
-        abort(403);
+        $redirectRoute = match ($user?->role) {
+            'produsen' => 'producer.dashboard',
+            default => 'buyer.dashboard',
+        };
+
+        return redirect()->route($redirectRoute)
+            ->with('error', 'Halaman ini hanya untuk administrator.');
     }
 }

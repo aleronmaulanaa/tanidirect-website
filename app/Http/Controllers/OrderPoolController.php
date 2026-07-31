@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\OrderPool;
 use App\Models\OrderPoolMember;
 use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class OrderPoolController extends Controller
 {
@@ -100,52 +100,22 @@ class OrderPoolController extends Controller
         $jumlah = $data['jumlah'];
 
         if ($orderPool->status !== 'open') {
-
-            return back()->with(
-                'error',
-                'Order pool ini sudah tidak aktif.'
-            );
-
+            return back()->with('error', 'Order pool ini sudah tidak aktif.');
         }
-
-
-        if ($jumlah < 5) {
-
-            return back()->with(
-                'error',
-                'Minimal pembelian adalah 5 kg.'
-            );
-
-        }
-
 
         $sisaVolume = $orderPool->target_volume - $orderPool->volume_terkumpul;
 
-
         if ($jumlah > $sisaVolume) {
-
-            return back()->with(
-                'error',
-                'Jumlah pembelian melebihi sisa order pool.'
-            );
-
+            return back()->with('error', 'Jumlah pembelian melebihi sisa order pool.');
         }
-
 
         $existing = OrderPoolMember::where('order_pool_id', $orderPool->id)
             ->where('buyer_id', $user->id)
             ->first();
 
-
         if ($existing) {
-
-            return back()->with(
-                'error',
-                'Anda sudah bergabung pada order pool ini.'
-            );
-
+            return back()->with('error', 'Anda sudah bergabung pada order pool ini.');
         }
-
 
         OrderPoolMember::create([
             'order_pool_id' => $orderPool->id,
@@ -153,28 +123,12 @@ class OrderPoolController extends Controller
             'jumlah' => $jumlah,
         ]);
 
+        $orderPool->increment('volume_terkumpul', $jumlah);
 
-        $orderPool->increment(
-            'volume_terkumpul',
-            $jumlah
-        );
-
-
-        if (
-            $orderPool->volume_terkumpul >= 
-            $orderPool->target_volume
-        ) {
-
-            $orderPool->update([
-                'status' => 'fulfilled'
-            ]);
-
+        if ($orderPool->volume_terkumpul >= $orderPool->target_volume) {
+            $orderPool->update(['status' => 'fulfilled']);
         }
 
-
-        return back()->with(
-            'success',
-            'Berhasil bergabung dalam order pool.'
-        );
+        return back()->with('success', 'Berhasil bergabung dalam order pool.');
     }
 }

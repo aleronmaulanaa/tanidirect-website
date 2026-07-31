@@ -195,6 +195,30 @@
 
         </div>
 
+        {{-- Tombol Konfirmasi Penerimaan --}}
+        @if($order->status_pengiriman === 'dikirim')
+        <div class="mt-8 rounded-3xl border-2 border-green-500/20 bg-white p-6 shadow-sm sm:p-8">
+            <div class="flex items-center gap-3 border-b border-gray-100 pb-4">
+                <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-100 text-xl shadow-2xs">📦</span>
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">Konfirmasi Penerimaan Barang</h2>
+                    <p class="text-sm text-gray-500">Pesanan Anda sudah dikirim. Silakan konfirmasi jika barang sudah diterima.</p>
+                </div>
+            </div>
+            <form action="{{ route('buyer.orders.confirmReceived', $order) }}" method="POST" class="mt-5">
+                @csrf
+                @method('PATCH')
+                <button
+                    type="submit"
+                    class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-green-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-green-800 active:scale-[0.99] sm:w-auto"
+                    onclick="return confirm('Apakah Anda yakin barang sudah diterima dengan baik?')"
+                >
+                    ✅ Barang Sudah Diterima
+                </button>
+            </form>
+        </div>
+        @endif
+
         {{-- Section Ulasan Produk --}}
         @php
             $userReview = $order->reviews->first();

@@ -165,11 +165,19 @@
                     </form>
                 </div>
                 @else
+                @if($order->status_pengiriman === 'diterima')
                 <div class="rounded-3xl border-2 border-dashed border-green-200 bg-green-50/50 p-6 text-center">
                     <div class="text-4xl">✅</div>
                     <h3 class="mt-3 text-lg font-bold text-green-800">Pesanan Selesai</h3>
                     <p class="mt-2 text-sm text-green-600">Pesanan ini sudah diterima oleh pembeli. Tidak ada aksi lanjutan yang diperlukan.</p>
                 </div>
+                @else
+                <div class="rounded-3xl border-2 border-dashed border-amber-200 bg-amber-50/50 p-6 text-center">
+                    <div class="text-4xl">📦</div>
+                    <h3 class="mt-3 text-lg font-bold text-amber-800">Menunggu Konfirmasi Pembeli</h3>
+                    <p class="mt-2 text-sm text-amber-600">Pesanan sudah dikirim. Menunggu pembeli mengonfirmasi penerimaan barang.</p>
+                </div>
+                @endif
                 @endif
 
             </div>

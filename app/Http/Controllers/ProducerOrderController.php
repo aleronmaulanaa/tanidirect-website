@@ -15,9 +15,8 @@ class ProducerOrderController extends Controller
      * Key = status saat ini, Value = status berikutnya.
      */
     private const STATUS_FLOW = [
-        'dipesan'  => 'diproses',
+        'dipesan' => 'diproses',
         'diproses' => 'dikirim',
-        'dikirim'  => 'diterima',
     ];
 
     /**
@@ -77,13 +76,13 @@ class ProducerOrderController extends Controller
         $order->update(['status_pengiriman' => $nextStatus]);
 
         ShipmentStatusLog::create([
-            'order_id'        => $order->id,
-            'status'          => $nextStatus,
-            'catatan'         => $data['catatan'] ?? $this->defaultNote($nextStatus),
+            'order_id' => $order->id,
+            'status' => $nextStatus,
+            'catatan' => $data['catatan'] ?? $this->defaultNote($nextStatus),
             'diperbarui_pada' => now(),
         ]);
 
-        return back()->with('success', 'Status pesanan berhasil diperbarui menjadi "' . ucfirst($nextStatus) . '".');
+        return back()->with('success', 'Status pesanan berhasil diperbarui menjadi "'.ucfirst($nextStatus).'".');
     }
 
     /**
@@ -104,9 +103,8 @@ class ProducerOrderController extends Controller
     {
         return match ($status) {
             'diproses' => 'Pesanan sedang diproses oleh produsen.',
-            'dikirim'  => 'Pesanan telah dikirim.',
-            'diterima' => 'Pesanan telah diterima oleh pembeli.',
-            default    => 'Status diperbarui.',
+            'dikirim' => 'Pesanan telah dikirim.',
+            default => 'Status diperbarui.',
         };
     }
 }

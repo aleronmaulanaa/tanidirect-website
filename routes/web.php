@@ -1,25 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminOrderPoolController;
 use App\Http\Controllers\AdminProducerController;
-use App\Http\Controllers\ChatbotController;
-use App\Http\Controllers\LandingController;
-use App\Http\Controllers\PriceTrackerController;
-use App\Http\Controllers\OrderPoolController;
-use App\Http\Controllers\ProducerAuthController;
-use App\Http\Controllers\ProducerOrderController;
-use App\Http\Controllers\ProducerOrderPoolController;
-use App\Http\Controllers\ProducerProductController;
 use App\Http\Controllers\BuyerAuthController;
 use App\Http\Controllers\BuyerDashboardController;
 use App\Http\Controllers\BuyerOrderController;
 use App\Http\Controllers\BuyerProductController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\DashboardRedirectController;
+use App\Http\Controllers\LandingController;
+use App\Http\Controllers\OrderPoolController;
+use App\Http\Controllers\PriceTrackerController;
+use App\Http\Controllers\ProducerAuthController;
+use App\Http\Controllers\ProducerOrderController;
+use App\Http\Controllers\ProducerOrderPoolController;
+use App\Http\Controllers\ProducerProductController;
 use App\Http\Controllers\ProfileController;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +32,8 @@ Route::get('/', [LandingController::class, 'index'])
 Route::post('/chatbot/message', [ChatbotController::class, 'message'])
     ->name('chatbot.message');
 
+Route::post('/chatbot/send', [ChatbotController::class, 'send'])
+    ->name('chatbot.send');
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +45,6 @@ Route::get('/dashboard', DashboardRedirectController::class)
     ->middleware('auth')
     ->name('dashboard');
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Admin
@@ -54,7 +53,7 @@ Route::get('/dashboard', DashboardRedirectController::class)
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 
-    Route::view('/admin/dashboard', 'admin.dashboard')
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
 
     Route::controller(AdminOrderPoolController::class)
@@ -73,8 +72,6 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 
 });
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Profile
@@ -86,8 +83,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Price Tracker
@@ -98,13 +93,11 @@ Route::middleware('role:pembeli,produsen')->group(function () {
 
     Route::get('/price-tracker', [
         PriceTrackerController::class,
-        'index'
+        'index',
     ])
-    ->name('price-tracker');
+        ->name('price-tracker');
 
 });
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -138,8 +131,6 @@ Route::middleware('role:pembeli')->group(function () {
 
 });
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Producer Authentication & Dashboard
@@ -148,52 +139,43 @@ Route::middleware('role:pembeli')->group(function () {
 
 Route::prefix('producer')->group(function () {
 
-
     Route::get('/login', function () {
 
         return view('producer.auth.login');
 
     })
-    ->middleware('guest')
-    ->name('producer.login');
-
-
+        ->middleware('guest')
+        ->name('producer.login');
 
     Route::post('/login', [
         ProducerAuthController::class,
-        'login'
+        'login',
     ])
-    ->middleware('guest')
-    ->name('producer.login.process');
-
-
+        ->middleware('guest')
+        ->name('producer.login.process');
 
     Route::get('/register', function () {
 
         return view('producer.auth.register');
 
     })
-    ->middleware('guest')
-    ->name('producer.register');
-
-
+        ->middleware('guest')
+        ->name('producer.register');
 
     Route::post('/register', [
         ProducerAuthController::class,
-        'register'
+        'register',
     ])
-    ->middleware('guest')
-    ->name('producer.register.process');
-
-
+        ->middleware('guest')
+        ->name('producer.register.process');
 
     Route::get('/dashboard', function () {
 
         return view('producer.dashboard');
 
     })
-    ->middleware('role:produsen')
-    ->name('producer.dashboard');
+        ->middleware('role:produsen')
+        ->name('producer.dashboard');
 
     Route::middleware('role:produsen')
         ->controller(ProducerProductController::class)
@@ -228,10 +210,7 @@ Route::prefix('producer')->group(function () {
             Route::put('/{order}/status', 'updateStatus')->name('updateStatus');
         });
 
-
 });
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -241,47 +220,37 @@ Route::prefix('producer')->group(function () {
 
 Route::prefix('buyer')->group(function () {
 
-
     Route::get('/login', function () {
 
         return view('buyer.auth.login');
 
     })
-    ->middleware('guest')
-    ->name('buyer.login');
-
-
+        ->middleware('guest')
+        ->name('buyer.login');
 
     Route::post('/login', [
         BuyerAuthController::class,
-        'login'
+        'login',
     ])
-    ->middleware('guest')
-    ->name('buyer.login.process');
-
-
+        ->middleware('guest')
+        ->name('buyer.login.process');
 
     Route::get('/register', function () {
 
         return view('buyer.auth.register');
 
     })
-    ->middleware('guest')
-    ->name('buyer.register');
-
-
+        ->middleware('guest')
+        ->name('buyer.register');
 
     Route::post('/register', [
         BuyerAuthController::class,
-        'register'
+        'register',
     ])
-    ->middleware('guest')
-    ->name('buyer.register.process');
-
+        ->middleware('guest')
+        ->name('buyer.register.process');
 
 });
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -293,12 +262,11 @@ Route::prefix('buyer')
     ->middleware('role:pembeli')
     ->group(function () {
 
-
         Route::get('/dashboard', [
             BuyerDashboardController::class,
-            'index'
+            'index',
         ])
-        ->name('buyer.dashboard');
+            ->name('buyer.dashboard');
 
         Route::get('/products/{product}', [BuyerProductController::class, 'show'])
             ->name('buyer.products.show');
@@ -312,13 +280,13 @@ Route::prefix('buyer')
         Route::get('/orders/{order}/tracking', [BuyerOrderController::class, 'tracking'])
             ->name('buyer.orders.tracking');
 
+        Route::patch('/orders/{order}/confirm-received', [BuyerOrderController::class, 'confirmReceived'])
+            ->name('buyer.orders.confirmReceived');
+
         Route::post('/orders/{order}/review', [BuyerOrderController::class, 'storeReview'])
             ->name('buyer.orders.review');
 
-
     });
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -334,17 +302,13 @@ Route::post('/logout', function () {
         ->session()
         ->invalidate();
 
-
     request()
         ->session()
         ->regenerateToken();
 
-
     return redirect('/');
 
-
 })
-->name('logout');
-
+    ->name('logout');
 
 require __DIR__.'/auth.php';

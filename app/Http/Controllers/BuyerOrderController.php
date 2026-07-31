@@ -50,7 +50,7 @@ class BuyerOrderController extends Controller
         $subtotal = $pricePerUnit * $quantity;
         $serviceFee = max(0, round($subtotal * 0.02, 2));
         $grandTotal = $subtotal + $serviceFee;
-        $orderId = 'TANI-' . time() . '-' . rand(1000, 9999);
+        $orderId = 'TANI-'.time().'-'.rand(1000, 9999);
 
         $this->setupMidtrans();
 
@@ -123,7 +123,7 @@ class BuyerOrderController extends Controller
 
         if (! in_array($transactionStatus, ['capture', 'settlement', 'pending', 'authorize', 'challenge'], true)) {
             throw ValidationException::withMessages([
-                'jumlah' => 'Status pembayaran tidak valid: ' . $transactionStatus,
+                'jumlah' => 'Status pembayaran tidak valid: '.$transactionStatus,
             ]);
         }
 
@@ -205,6 +205,29 @@ class BuyerOrderController extends Controller
     }
 
     /**
+     * Pembeli mengonfirmasi penerimaan barang (dikirim → diterima).
+     */
+    public function confirmReceived(Request $request, Order $order): RedirectResponse
+    {
+        abort_unless($order->buyer_id === $request->user()->id, 403);
+
+        if ($order->status_pengiriman !== 'dikirim') {
+            return back()->with('error', 'Konfirmasi penerimaan hanya bisa dilakukan saat status pesanan "Dikirim".');
+        }
+
+        $order->update(['status_pengiriman' => 'diterima']);
+
+        ShipmentStatusLog::create([
+            'order_id' => $order->id,
+            'status' => 'diterima',
+            'catatan' => 'Pesanan dikonfirmasi diterima oleh pembeli.',
+            'diperbarui_pada' => now(),
+        ]);
+
+        return back()->with('success', 'Pesanan berhasil dikonfirmasi sebagai diterima. Terima kasih!');
+    }
+
+    /**
      * Simpan ulasan produk dari pembeli.
      */
     public function storeReview(Request $request, Order $order): RedirectResponse
@@ -220,16 +243,16 @@ class BuyerOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'rating'   => ['required', 'integer', 'between:1,5'],
+            'rating' => ['required', 'integer', 'between:1,5'],
             'komentar' => ['nullable', 'string', 'max:1000'],
         ]);
 
         Review::create([
-            'order_id'    => $order->id,
-            'buyer_id'    => $request->user()->id,
+            'order_id' => $order->id,
+            'buyer_id' => $request->user()->id,
             'producer_id' => $order->product->producer_id,
-            'rating'      => $validated['rating'],
-            'komentar'    => $validated['komentar'] ?? null,
+            'rating' => $validated['rating'],
+            'komentar' => $validated['komentar'] ?? null,
         ]);
 
         return back()->with('success', 'Terima kasih! Ulasan Anda berhasil dikirim.');

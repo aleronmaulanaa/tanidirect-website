@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\ProducerProfile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -34,14 +34,13 @@ class ProducerAuthController extends Controller
             'user_id' => $user->id,
             'kabupaten_kota' => $validated['kabupaten_kota'],
             'komoditas_utama' => $validated['komoditas_utama'],
-            'status_verifikasi' => 'terverifikasi',
+            'status_verifikasi' => 'menunggu',
         ]);
 
         return redirect()
             ->route('producer.login')
             ->with('success', 'Registrasi berhasil, silahkan login.');
     }
-
 
     public function login(Request $request)
     {
@@ -59,7 +58,7 @@ class ProducerAuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email, password, atau jenis akun tidak sesuai.'
+            'email' => 'Email, password, atau jenis akun tidak sesuai.',
         ]);
     }
 }

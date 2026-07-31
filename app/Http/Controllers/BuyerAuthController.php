@@ -15,6 +15,8 @@ class BuyerAuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'phone' => 'required|string|max:20',
+            'kabupaten_kota' => 'required|string|max:100',
         ]);
 
         User::create([
@@ -30,7 +32,6 @@ class BuyerAuthController extends Controller
             ->route('buyer.login')
             ->with('success', 'Registrasi berhasil, silahkan login.');
     }
-
 
     public function login(Request $request)
     {
@@ -48,7 +49,7 @@ class BuyerAuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email, password, atau jenis akun tidak sesuai.'
+            'email' => 'Email, password, atau jenis akun tidak sesuai.',
         ]);
     }
 }
