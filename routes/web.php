@@ -29,7 +29,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingController::class, 'index'])
     ->name('landing');
 
-Route::post('/chatbot/message', [ChatbotController::class, 'message'])
+Route::match(['GET', 'POST'], '/chatbot/message', [ChatbotController::class, 'message'])
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])
     ->name('chatbot.message');
 
 Route::post('/chatbot/send', [ChatbotController::class, 'send'])

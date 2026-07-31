@@ -73,13 +73,11 @@
             messages.appendChild(loadingBubble);
 
             try {
-                const response = await fetch('{{ route('chatbot.message') }}', {
-                    method: 'POST',
+                const response = await fetch('{{ route('chatbot.message') }}?message=' + encodeURIComponent(text), {
+                    method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({ message: text })
+                        'Accept': 'application/json',
+                    }
                 });
 
                 const rawText = await response.text();
