@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\OrderPool;
 use App\Models\OrderPoolMember;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class OrderPoolController extends Controller
 {
@@ -38,6 +40,43 @@ class OrderPoolController extends Controller
         ]);
     }
 
+    public function create(): View
+    {
+        $products = Product::with('producer')
+            ->where('is_active', true)
+            ->whereHas('producer', fn ($q) => $q->where('status_verifikasi', 'terverifikasi'))
+            ->latest()
+            ->get();
+
+        return view('order-pool.create', [
+            'products' => $products,
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        $data = $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+            'target_volume' => ['required', 'integer', 'min:5'],
+            'batas_waktu' => ['required', 'date'],
+        ]);
+
+        $product = Product::findOrFail($data['product_id']);
+
+        OrderPool::create([
+            'product_id' => $product->id,
+            'target_volume' => $data['target_volume'],
+            'volume_terkumpul' => 0,
+            'status' => 'open',
+            'batas_waktu' => $data['batas_waktu'],
+        ]);
+
+        return redirect()->route('order-pool.index')
+            ->with('success', 'Order pool berhasil dibuat. Tunggu pembeli lain bergabung.');
+    }
+
     public function show(OrderPool $orderPool): View
     {
         $orderPool->load([
@@ -50,11 +89,24 @@ class OrderPoolController extends Controller
         ]);
     }
 
-    public function join(OrderPool $orderPool)
+    public function join(OrderPool $orderPool, Request $request)
     {
         $user = Auth::user();
 
-        $jumlah = request()->jumlah;
+        $data = $request->validate([
+            'jumlah' => ['required', 'integer', 'min:5'],
+        ]);
+
+        $jumlah = $data['jumlah'];
+
+        if ($orderPool->status !== 'open') {
+
+            return back()->with(
+                'error',
+                'Order pool ini sudah tidak aktif.'
+            );
+
+        }
 
 
         if ($jumlah < 5) {

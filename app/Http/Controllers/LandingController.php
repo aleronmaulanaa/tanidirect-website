@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderPool;
 use App\Models\Product;
 use App\Models\PriceReference;
 
@@ -90,55 +91,31 @@ class LandingController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Group Buy Preview
-        |--------------------------------------------------------------------------
-        |
-        | Sementara menggunakan produk aktif.
-        | Nanti diganti dengan order_pools.volume_terkumpul
-        |
+        | Order Pool Terbaru (Patungan)
         |--------------------------------------------------------------------------
         */
 
-
-        $groupBuyData = null;
-
-
-        $groupBuyProduct = Product::where('is_active', true)
+        $featuredOrderPool = OrderPool::with('product.producer')
+            ->where('status', 'open')
             ->latest()
             ->first();
 
 
+        $groupBuyData = null;
 
-        if ($groupBuyProduct) {
+        if ($featuredOrderPool) {
 
-
-            $target = 30;
-
-
-            $current = min(
-                round($groupBuyProduct->stok * 0.4),
-                $target
+            $progress = min(
+                100,
+                ($featuredOrderPool->volume_terkumpul / max($featuredOrderPool->target_volume, 1)) * 100
             );
-
-
-            $percentage = round(
-                ($current / $target) * 100
-            );
-
-
 
             $groupBuyData = [
-
-                'product' => $groupBuyProduct,
-
-                'target' => $target,
-
-                'current' => $current,
-
-                'remaining' => $target - $current,
-
-                'percentage' => $percentage,
-
+                'orderPool' => $featuredOrderPool,
+                'target' => $featuredOrderPool->target_volume,
+                'current' => $featuredOrderPool->volume_terkumpul,
+                'remaining' => max(0, $featuredOrderPool->target_volume - $featuredOrderPool->volume_terkumpul),
+                'percentage' => round($progress),
             ];
 
         }

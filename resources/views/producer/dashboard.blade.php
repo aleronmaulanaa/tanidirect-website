@@ -41,11 +41,11 @@
                 <p class="mt-2 text-sm leading-6 text-gray-500">Lihat dan kelola pesanan dari pembeli, perbarui status pengiriman.</p>
                 <span class="mt-5 inline-block text-sm font-bold text-green-700">Kelola pesanan →</span>
             </a>
-            <a href="#notifikasi" class="rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-xl">🔔</div>
-                <h2 class="mt-5 text-lg font-bold">Notifikasi Pesanan</h2>
-                <p class="mt-2 text-sm leading-6 text-gray-500">Lihat pesan order baru dari pembeli secara cepat.</p>
-                <span class="mt-5 inline-block text-sm font-bold text-green-700">Lihat notifikasi →</span>
+            <a href="{{ route('producer.order-pools.index') }}" class="rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-100 text-xl">🤝</div>
+                <h2 class="mt-5 text-lg font-bold">Order Pool Saya</h2>
+                <p class="mt-2 text-sm leading-6 text-gray-500">Lihat dan kelola order pool untuk produk Anda.</p>
+                <span class="mt-5 inline-block text-sm font-bold text-green-700">Kelola order pool →</span>
             </a>
             <a href="{{ route('price-tracker') }}" class="rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-100 text-xl">📈</div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderPool;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\View\View;
@@ -23,12 +24,20 @@ class AdminDashboardController extends Controller
         // 3. Total pesanan di sistem
         $totalOrders = Order::count();
 
-        // 4. Statistik Tambahan: Produk aktif & Omzet transaksi
+        // 4. Statistik Tambahan: Produk aktif, Order Pool & Omzet transaksi
         $totalProducts = Product::where('is_active', true)->count();
+        $totalOrderPools = OrderPool::count();
         $totalRevenue = Order::sum('grand_total') ?: Order::sum('total_harga');
 
         // 5. Pesanan terbaru
         $recentOrders = Order::with(['buyer', 'product'])
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        // 6. Order Pool terbaru
+        $orderPools = OrderPool::with('product.producer.user')
+            ->where('status', 'open')
             ->latest()
             ->limit(5)
             ->get();
@@ -38,8 +47,10 @@ class AdminDashboardController extends Controller
             'totalProducers',
             'totalOrders',
             'totalProducts',
+            'totalOrderPools',
             'totalRevenue',
-            'recentOrders'
+            'recentOrders',
+            'orderPools'
         ));
     }
 }

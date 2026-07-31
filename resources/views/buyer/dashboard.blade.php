@@ -767,7 +767,6 @@ class="text-sm font-normal text-gray-500">
 
 
 
-
 {{-- Patungan --}}
 
 <section
@@ -787,56 +786,148 @@ class="text-sm font-normal text-gray-500">
 
 
 
-<div
-    class="mt-6 rounded-3xl bg-white p-8 shadow-sm">
-
-
-
-@if($orderPools->count())
-
-
-@foreach($orderPools as $pool)
-
-
-<p class="font-semibold">
-
-{{ $pool->product->nama_produk }}
-
-</p>
-
-
-@endforeach
-
-
-
-@else
-
-
-<h3
-    class="text-xl font-bold text-gray-900">
-
-
-    Belum ada patungan aktif
-
-
-</h3>
-
-
 <p
     class="mt-2 text-gray-500">
 
 
-    Gabungkan pembelian dengan pengguna lain untuk mendapatkan harga lebih hemat.
+    Gabungkan pembelian dengan pembeli lain untuk mendapatkan harga langsung dari petani.
 
 
 </p>
 
 
-@endif
 
+
+<div
+    class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+
+    @forelse($orderPools as $pool)
+
+
+    @php
+        $progress = min(
+            100,
+            ($pool->volume_terkumpul / max($pool->target_volume, 1)) * 100
+        );
+    @endphp
+
+
+    <div
+        class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
+
+        <div class="p-6">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        {{ $pool->product->nama_produk }}
+                    </h3>
+
+                    <p class="mt-1 text-sm text-gray-500">
+                        {{ $pool->product->producer->user->name ?? 'Petani TaniDirect' }}
+                    </p>
+
+                </div>
+
+                <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                    Open
+                </span>
+
+            </div>
+
+            <div class="mt-6">
+
+                <p class="text-2xl font-bold text-green-700">
+                    Rp {{ number_format($pool->product->harga_jual, 0, ',', '.') }}
+                    <span class="text-base font-normal text-gray-500">
+                        /{{ $pool->product->satuan }}
+                    </span>
+                </p>
+
+            </div>
+
+            <div class="mt-6">
+
+                <div class="mb-2 flex justify-between text-sm">
+
+                    <span>Progress</span>
+
+                    <span>{{ round($progress) }}%</span>
+
+                </div>
+
+                <div class="h-3 overflow-hidden rounded-full bg-gray-200">
+
+                    <div
+                        class="h-full rounded-full bg-green-600"
+                        @style([
+                            "width: {$progress}%"
+                        ])
+                    ></div>
+
+                </div>
+
+                <p class="mt-2 text-sm text-gray-500">
+                    {{ $pool->volume_terkumpul }}
+                    /
+                    {{ $pool->target_volume }}
+                    kg
+                </p>
+
+            </div>
+
+            <div class="mt-6">
+
+                <a
+                    href="{{ route('order-pool.show', $pool) }}"
+                    class="block rounded-xl bg-green-600 py-3 text-center font-medium text-white transition hover:bg-green-700"
+                >
+                    Lihat Detail
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    @empty
+
+
+    <div class="col-span-full rounded-3xl bg-white py-16 text-center shadow-sm">
+
+        <h3 class="text-xl font-bold text-gray-900">
+            Belum ada patungan aktif
+        </h3>
+
+        <p class="mt-2 text-gray-500">
+            Order pool akan muncul di sini ketika ada pembeli yang membuat patungan.
+        </p>
+
+        <div class="mt-6">
+
+            <a
+                href="{{ route('order-pool.index') }}"
+                class="inline-flex rounded-xl bg-green-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-green-800"
+            >
+                Lihat Semua Order Pool
+            </a>
+
+        </div>
+
+    </div>
+
+
+    @endforelse
 
 
 </div>
+
 
 
 </section>

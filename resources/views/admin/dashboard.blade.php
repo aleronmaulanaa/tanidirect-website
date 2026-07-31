@@ -92,7 +92,19 @@
                 <p class="mt-2 text-xs font-medium text-gray-500">Transaksi pesanan di sistem</p>
             </div>
 
-            {{-- Card 4: Total Omzet --}}
+            {{-- Card 4: Total Order Pool --}}
+            <div class="rounded-3xl border border-gray-100/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-gray-500">Order Pool</span>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-100 text-2xl">🤝</div>
+                </div>
+                <h2 class="mt-4 text-4xl font-extrabold text-green-800">
+                    {{ number_format($totalOrderPools) }}
+                </h2>
+                <p class="mt-2 text-xs font-medium text-gray-500">Order pool aktif di platform</p>
+            </div>
+
+            {{-- Card 5: Omzet Transaksi --}}
             <div class="rounded-3xl border border-gray-100/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex items-center justify-between">
                     <span class="text-sm font-bold text-gray-500">Omzet Transaksi</span>
@@ -106,7 +118,7 @@
 
         </section>
 
-        {{-- Tabel Transaksi Terbaru --}}
+{{-- Tabel Transaksi Terbaru --}}
         <section class="mt-10">
             <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -164,7 +176,56 @@
             </div>
         </section>
 
+
+        {{-- Order Pool Terbaru --}}
+        <section class="mt-10">
+            <div class="flex items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">Order Pool Terbaru</h2>
+                    <p class="mt-2 text-sm text-gray-500">Daftar order pool yang sedang berjalan di platform.</p>
+                </div>
+                <a href="{{ route('admin.order-pools.index') }}" class="rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-800">
+                    Lihat Semua
+                </a>
+            </div>
+
+            <div class="mt-6 overflow-hidden rounded-3xl bg-white shadow-sm">
+                @forelse($orderPools as $orderPool)
+                    <div class="flex flex-col gap-4 border-b border-gray-100 p-5 last:border-0 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p class="font-bold text-gray-900">{{ $orderPool->product->nama_produk }}</p>
+                            <p class="mt-1 text-sm text-gray-500">
+                                {{ $orderPool->product->producer->user->name ?? 'Petani' }} ·
+                                {{ $orderPool->volume_terkumpul }} / {{ $orderPool->target_volume }} kg
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 sm:text-right">
+                            <div>
+                                @php
+                                    $poolStatusColors = [
+                                        'open' => 'bg-green-100 text-green-700',
+                                        'fulfilled' => 'bg-blue-100 text-blue-700',
+                                        'closed' => 'bg-red-100 text-red-700',
+                                    ];
+                                    $poolBadgeClass = $poolStatusColors[$orderPool->status] ?? 'bg-gray-100 text-gray-700';
+                                @endphp
+                                <span class="mt-1 inline-flex rounded-full px-3 py-1 text-xs font-bold {{ $poolBadgeClass }}">{{ ucfirst($orderPool->status) }}</span>
+                            </div>
+                            <a href="{{ route('admin.order-pools.show', $orderPool) }}"
+                               class="rounded-xl border border-green-200 px-4 py-2 text-xs font-bold text-green-700 transition hover:bg-green-50">
+                                Detail →
+                            </a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-8 text-center text-sm text-gray-500">Belum ada order pool di sistem.</div>
+                @endforelse
+            </div>
+        </section>
+
+
     </main>
+
 
 </body>
 </html>

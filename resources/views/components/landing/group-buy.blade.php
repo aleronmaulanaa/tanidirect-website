@@ -229,7 +229,7 @@
                     @if(auth()->user()?->role === 'pembeli')
 
                     <a
-                        href="{{ route('order-pool.index') }}"
+                        href="{{ route('order-pool.create') }}"
                         class="rounded-xl bg-green-700 px-7 py-3 text-center font-semibold text-white hover:bg-green-800">
 
 

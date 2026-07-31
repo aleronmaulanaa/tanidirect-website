@@ -1,12 +1,22 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                Order Pool
-            </h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Gabung pembelian bersama untuk mendapatkan harga langsung dari petani.
-            </p>
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    Order Pool
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Gabung pembelian bersama untuk mendapatkan harga langsung dari petani.
+                </p>
+            </div>
+            @if(auth()->check() && auth()->user()->role === 'pembeli')
+                <a
+                    href="{{ route('order-pool.create') }}"
+                    class="rounded-xl bg-green-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-green-700"
+                >
+                    Buat Order Pool
+                </a>
+            @endif
         </div>
     </x-slot>
 

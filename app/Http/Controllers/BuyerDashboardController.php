@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderPool;
 use App\Models\PriceReference;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
 class BuyerDashboardController extends Controller
@@ -114,7 +114,7 @@ class BuyerDashboardController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $orderPools = OrderPool::with('product')
+        $orderPools = OrderPool::with('product.producer')
             ->where('status', 'open')
             ->latest()
             ->limit(3)

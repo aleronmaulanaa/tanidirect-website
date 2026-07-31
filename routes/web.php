@@ -3,22 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\AdminOrderPoolController;
+use App\Http\Controllers\AdminProducerController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PriceTrackerController;
 use App\Http\Controllers\OrderPoolController;
-
 use App\Http\Controllers\ProducerAuthController;
+use App\Http\Controllers\ProducerOrderController;
+use App\Http\Controllers\ProducerOrderPoolController;
+use App\Http\Controllers\ProducerProductController;
 use App\Http\Controllers\BuyerAuthController;
 use App\Http\Controllers\BuyerDashboardController;
-use App\Http\Controllers\DashboardRedirectController;
-use App\Http\Controllers\ProducerProductController;
-use App\Http\Controllers\BuyerProductController;
 use App\Http\Controllers\BuyerOrderController;
+use App\Http\Controllers\BuyerProductController;
+use App\Http\Controllers\DashboardRedirectController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ChatbotController;
-use App\Http\Controllers\ProducerOrderController;
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\AdminProducerController;
 
 
 /*
@@ -32,9 +32,6 @@ Route::get('/', [LandingController::class, 'index'])
 
 Route::post('/chatbot/message', [ChatbotController::class, 'message'])
     ->name('chatbot.message');
-
-Route::post('/chatbot/send', [ChatbotController::class, 'send'])
-    ->name('chatbot.send');
 
 
 /*
@@ -55,15 +52,23 @@ Route::get('/dashboard', DashboardRedirectController::class)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+    Route::view('/admin/dashboard', 'admin.dashboard')
         ->name('admin.dashboard');
+
+    Route::controller(AdminOrderPoolController::class)
+        ->prefix('admin/order-pools')
+        ->name('admin.order-pools.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{orderPool}', 'show')->name('show');
+        });
 
     Route::get('/admin/producers', [AdminProducerController::class, 'index'])
         ->name('admin.producers.index');
 
-    Route::post('/admin/producers/{user}/verify', [AdminProducerController::class, 'verify'])
+    Route::put('/admin/producers/{user}/verify', [AdminProducerController::class, 'verify'])
         ->name('admin.producers.verify');
 
 });
@@ -80,7 +85,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
-
 
 
 
@@ -102,7 +106,6 @@ Route::middleware('role:pembeli,produsen')->group(function () {
 
 
 
-
 /*
 |--------------------------------------------------------------------------
 | Order Pool
@@ -119,10 +122,14 @@ Route::middleware('role:pembeli')->group(function () {
             Route::get('/', 'index')
                 ->name('index');
 
+            Route::get('/create', 'create')
+                ->name('create');
+
+            Route::post('/', 'store')
+                ->name('store');
 
             Route::get('/{orderPool}', 'show')
                 ->name('show');
-
 
             Route::post('/{orderPool}/join', 'join')
                 ->name('join');
@@ -130,7 +137,6 @@ Route::middleware('role:pembeli')->group(function () {
         });
 
 });
-
 
 
 
@@ -204,19 +210,26 @@ Route::prefix('producer')->group(function () {
         });
 
     Route::middleware('role:produsen')
+        ->controller(ProducerOrderPoolController::class)
+        ->prefix('order-pools')
+        ->name('producer.order-pools.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{orderPool}', 'show')->name('show');
+        });
+
+    Route::middleware('role:produsen')
         ->controller(ProducerOrderController::class)
         ->prefix('orders')
         ->name('producer.orders.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{order}', 'show')->name('show');
-            Route::patch('/{order}/status', 'updateStatus')->name('updateStatus');
+            Route::put('/{order}/status', 'updateStatus')->name('updateStatus');
         });
 
 
 });
-
-
 
 
 
@@ -270,8 +283,6 @@ Route::prefix('buyer')->group(function () {
 
 
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Buyer Dashboard
@@ -309,8 +320,6 @@ Route::prefix('buyer')
 
 
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Logout
@@ -336,7 +345,6 @@ Route::post('/logout', function () {
 
 })
 ->name('logout');
-
 
 
 require __DIR__.'/auth.php';

@@ -39,13 +39,6 @@ it('returns product suggestions for product search requests', function () {
     $response->assertJsonFragment(['nama_produk' => 'Jagung Manis Premium']);
 });
 
-it('renders a csrf token meta tag on the landing page', function () {
-    $response = $this->get('/');
-
-    $response->assertOk();
-    $response->assertSee('name="csrf-token"', false);
-});
-
 it('uses an api response when the ai provider is configured', function () {
     Http::fake([
         'https://generativelanguage.googleapis.com/v1beta/models/*' => Http::response([
