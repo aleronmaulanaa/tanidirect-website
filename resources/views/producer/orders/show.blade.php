@@ -118,7 +118,7 @@
 
                     <form method="POST" action="{{ route('producer.orders.updateStatus', $order) }}" class="mt-5">
                         @csrf
-                        @method('PATCH')
+                        @method('PUT')
 
                         <div>
                             <label for="catatan" class="block text-sm font-semibold text-gray-700">
